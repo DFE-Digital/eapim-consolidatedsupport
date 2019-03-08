@@ -1,0 +1,439 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "DFE Consolidated Support HelpDesk API",
+    "description": "DFE Consolidated Support HelpDesk API",
+    "version": "1.0.0"
+  },
+  "host": "eapimtest.free.beeceptor.com",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyHeader": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header"
+    },
+    "apiKeyQuery": {
+      "type": "apiKey",
+      "name": "subscription-key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ],
+  "paths": {
+    "/Tickets": {
+      "post": {
+        "description": "Allows to post ticket Data",
+        "operationId": "SubmitTicketData",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Tickets"
+            },
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "produces": [
+          "application/hal+json",
+          "text/plain"
+        ],
+        "consumes": [
+          "text/plain"
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "id": {
+      "name": "id",
+      "in": "path",
+      "description": "Format - int32.",
+      "required": true,
+      "type": "integer"
+    }
+  },
+  "definitions": {
+    "Tickets": {
+      "type": "object",
+      "properties": {
+        "ContactUniqueIdentifiers": {
+          "description": "SoR Unique identifier for Contact assosiated for the instance of a Ticket",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "UniqueIdentifier": {
+                "description": "SoR generated unique identifier ",
+                "type": "string"
+              },
+              "UniqueIdentifierAlias": {
+                "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                "type": "string"
+              },
+              "IdentifierType": {
+                "description": "denotes the type if identifier",
+                "type": "string",
+                "enum": [
+                  "GUID",
+                  "NUMBER",
+                  "NAME"
+                ],
+                "default": "GUID"
+              }
+            }
+          },
+          "maxItems": 99,
+          "minItems": 1
+        },
+        "OrganisationUniqueIdentifiers": {
+          "description": "SoR Unique identifier for the Organisation assosiated to the instance of a Ticket",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "UniqueIdentifier": {
+                "description": "SoR generated unique identifier ",
+                "type": "string"
+              },
+              "UniqueIdentifierAlias": {
+                "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                "type": "string"
+              },
+              "IdentifierType": {
+                "description": "denotes the type if identifier",
+                "type": "string",
+                "enum": [
+                  "GUID",
+                  "NUMBER",
+                  "NAME"
+                ],
+                "default": "GUID"
+              }
+            }
+          },
+          "maxItems": 99,
+          "minItems": 0
+        },
+        "AdvisorUniqueIdentifiers": {
+          "description": "SoR Unique identifier for the Advisor assosiated to this instance of a Ticket",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "UniqueIdentifier": {
+                "description": "SoR generated unique identifier ",
+                "type": "string"
+              },
+              "UniqueIdentifierAlias": {
+                "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                "type": "string"
+              },
+              "IdentifierType": {
+                "description": "denotes the type if identifier",
+                "type": "string",
+                "enum": [
+                  "GUID",
+                  "NUMBER",
+                  "NAME"
+                ],
+                "default": "GUID"
+              }
+            }
+          },
+          "maxItems": 99,
+          "minItems": 1
+        },
+        "AdvisorTeamUniqueIdentifiers": {
+          "description": "SoR Unique identifier for the Advisors Team assosiated to this instance of a Ticket",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "UniqueIdentifier": {
+                "description": "SoR generated unique identifier ",
+                "type": "string"
+              },
+              "UniqueIdentifierAlias": {
+                "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                "type": "string"
+              },
+              "IdentifierType": {
+                "description": "denotes the type if identifier",
+                "type": "string",
+                "enum": [
+                  "GUID",
+                  "NUMBER",
+                  "NAME"
+                ],
+                "default": "GUID"
+              }
+            }
+          },
+          "maxItems": 99,
+          "minItems": 1
+        },
+        "TicketUniqueIdentifiers": {
+          "description": "SoR Unique identifier for Ticket",
+          "type": "string",
+          "maxItems": 1,
+          "minItems": 1
+        },
+        "TicketContactName": {
+          "description": "Contact Name for Ticket",
+          "type": "string"
+        },
+        "TicketSubjectCategory": {
+          "description": "Subject Category for Ticket **",
+          "type": "string"
+        },
+        "TicketType": {
+          "description": "Type of Ticket **",
+          "type": "string"
+        },
+        "TicketStatus": {
+          "description": "Status of Ticket **",
+          "type": "string"
+        },
+        "TicketPriority": {
+          "description": "Priority of Ticket **",
+          "type": "string"
+        },
+        "TicketAssignedtoTeam": {
+          "description": "Team Ticket is assigned to **?",
+          "type": "string"
+        },
+        "TicketAssignedtoAdvisor": {
+          "description": "Advisor Ticket is assigned to",
+          "type": "string"
+        },
+        "TicketTitle": {
+          "description": "Ticket title, short description",
+          "type": "string"
+        },
+        "TicketDescription": {
+          "description": "Description of query",
+          "type": "string"
+        },
+        "TicketPreferredCommunicationChannel": {
+          "description": "Preferred Communication Channel for this ticket",
+          "type": "string"
+        },
+        "DatetimeTicketRaised": {
+          "description": "Date & Time that Ticket was raised",
+          "type": "string",
+          "format": "date-time"
+        },
+        "TicketRaiseViaChannel": {
+          "description": "Original Channel via which ticket was raised **",
+          "type": "string"
+        },
+        "TicketTags": {
+          "description": "Tags associated with Ticket",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Interactions": {
+          "description": "Interactions for this Ticket instance",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "InteractiontUniqueIdentifier": {
+                "description": "Unique identifier for Interaction Not sure we need this.  A sequence is required for the interactions",
+                "type": "string"
+              },
+              "InteractionSequenceNumber": {
+                "description": "Sequence number denoting the sequence the interation should be processed",
+                "type": "number"
+              },
+              "TicketUniqueIdentifier": {
+                "description": "SoR Unique identifier for Ticket",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "UniqueIdentifier": {
+                      "description": "SoR generated unique identifier ",
+                      "type": "string"
+                    },
+                    "UniqueIdentifierAlias": {
+                      "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                      "type": "string"
+                    },
+                    "IdentifierType": {
+                      "description": "denotes the type if identifier",
+                      "type": "string",
+                      "enum": [
+                        "GUID",
+                        "NUMBER",
+                        "NAME"
+                      ],
+                      "default": "GUID"
+                    }
+                  }
+                }
+              },
+              "OrganisationUniqueIdentifiers": {
+                "description": "Unique identifier for the Organisation assosiated to the instance of a Ticket",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "UniqueIdentifier": {
+                      "description": "SoR generated unique identifier ",
+                      "type": "string"
+                    },
+                    "UniqueIdentifierAlias": {
+                      "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                      "type": "string"
+                    },
+                    "IdentifierType": {
+                      "description": "denotes the type if identifier",
+                      "type": "string",
+                      "enum": [
+                        "GUID",
+                        "NUMBER",
+                        "NAME"
+                      ],
+                      "default": "GUID"
+                    }
+                  }
+                }
+              },
+              "ContactUniqueIdentifiers": {
+                "description": "Unique identifier for Contact assosiated for the instance of a Ticket",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "UniqueIdentifier": {
+                      "description": "SoR generated unique identifier ",
+                      "type": "string"
+                    },
+                    "UniqueIdentifierAlias": {
+                      "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                      "type": "string"
+                    },
+                    "IdentifierType": {
+                      "description": "denotes the type if identifier",
+                      "type": "string",
+                      "enum": [
+                        "GUID",
+                        "NUMBER",
+                        "NAME"
+                      ],
+                      "default": "GUID"
+                    }
+                  }
+                }
+              },
+              "AdvisorUniqueIdentifiers": {
+                "description": "SoR Unique identifier for the Advisor assosiated to this Interaction",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "UniqueIdentifier": {
+                      "description": "SoR generated unique identifier ",
+                      "type": "string"
+                    },
+                    "UniqueIdentifierAlias": {
+                      "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                      "type": "string"
+                    },
+                    "IdentifierType": {
+                      "description": "denotes the type if identifier",
+                      "type": "string",
+                      "enum": [
+                        "GUID",
+                        "NUMBER",
+                        "NAME"
+                      ],
+                      "default": "GUID"
+                    }
+                  }
+                },
+                "maxItems": 99,
+                "minItems": 1
+              },
+              "AdvisorTeamUniqueIdentifiers": {
+                "description": "SoR Unique identifier for the Advisors Team assosiated to this Interaction",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "UniqueIdentifier": {
+                      "description": "SoR generated unique identifier ",
+                      "type": "string"
+                    },
+                    "UniqueIdentifierAlias": {
+                      "description": "Unique name assosiated with a SoR unique identifier as an alternative",
+                      "type": "string"
+                    },
+                    "IdentifierType": {
+                      "description": "denotes the type if identifier",
+                      "type": "string",
+                      "enum": [
+                        "GUID",
+                        "NUMBER",
+                        "NAME"
+                      ],
+                      "default": "GUID"
+                    }
+                  }
+                },
+                "maxItems": 99,
+                "minItems": 1
+              },
+              "InteractionCommunicationChannel": {
+                "description": "Communication Channel for this Interaction",
+                "type": "string"
+              },
+              "InteractionDatetime": {
+                "description": "Date & Time for this Interaction",
+                "type": "string",
+                "format": "date-time"
+              },
+              "InteractionDirection": {
+                "description": "Direction of the Interaction",
+                "type": "string"
+              },
+              "InteractionHeader": {
+                "description": "Short Header Description of Interaction",
+                "type": "string"
+              },
+              "InteractionBody": {
+                "description": "Main Body of Interaction",
+                "type": "string"
+              }
+            }
+          },
+          "maxItems": 99,
+          "minItems": 1
+        }
+      },
+      "xml": {
+        "name": "Tickets"
+      }
+    }
+
+  }
+}

@@ -5,7 +5,7 @@
     "description": "DFE Consolidated Support HelpDesk API",
     "version": "1.0.0"
   },
-  "host": "eapimtest.free.beeceptor.com",
+  "host": "ciptest.free.beeceptor.com",
   "schemes": [
     "https"
   ],

@@ -30,7 +30,7 @@
     }
   ],
   "paths": {
-    "/Tickets": {
+    "/api/data/Tickets": {
       "post": {
         "description": "Allows to post ticket Data",
         "operationId": "SubmitTicketData",

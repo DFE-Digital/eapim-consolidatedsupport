@@ -1,15 +1,17 @@
 <policies>
-  <inbound>
-    <rate-limit-by-key calls="25" renewal-period="60" counter-key="@(context.Request.IpAddress)" />
-    <base />
-  </inbound>
-  <backend>
-    <base />
-  </backend>
-  <outbound>
-    <base />
-  </outbound>
-  <on-error>
-    <base />
-  </on-error>
+    <inbound>
+        <set-backend-service base-url="{{createTicketLogicAppBaseUrl}}" />
+        <set-method id="apim-generated-policy">POST</set-method>
+        <rewrite-uri id="apim-generated-policy" template="{{createTicketLogicAppRewriteUrl}}" />
+        <set-header id="apim-generated-policy" name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
 </policies>

@@ -31,25 +31,32 @@
     }
   ],
   "paths": {
-    "/api/data/v9.1/contacts": {
+     "/api/data/v9.1/contacts": {
       "get": {
-        "summary": "GetContactData",
         "description": "Get Contact Data",
         "operationId": "GetContactData",
-        "requestBody": {
-          "content": {
-            "text/plain": { }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": { },
-              "text/plain": { }
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
-        }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "produces": [
+          "application/hal+json",
+          "text/plain"
+        ],
+        "consumes": [
+          "text/plain"
+        ]
       }
     }
     ,

@@ -5,7 +5,7 @@
     "version": "1.0",
     "description": "CS CRM Facade API"
   },
-  "host": "dev-api-customerengagement.platform.education.gov.uk",
+  "host": "esfa-cs-dev.api.crm4.dynamics.com",
   "basePath": "/crmapi",
   "schemes": [
     "https"
@@ -28,11 +28,6 @@
     },
     {
       "apiKeyQuery": []
-    }
-  ],
-  "x-servers": [
-    {
-      "url": "https://dev-api-customerengagement.platform.education.gov.uk"
     }
   ],
   "paths": {

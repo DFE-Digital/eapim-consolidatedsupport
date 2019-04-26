@@ -59,7 +59,7 @@
       }
     }
     ,
-    "/crmapi/api/data/v9.1/incidents": {
+    "/api/data/v9.1/incidents": {
       "post": {
         "operationId": "createincidentdata",
         "summary": "CreateIncidentData",

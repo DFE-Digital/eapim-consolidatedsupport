@@ -1,0 +1,57 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "CS CRM Facade API",
+    "version": "1.0",
+    "description": "CS CRM Facade API"
+  },
+  "host": "dev-api-customerengagement.platform.education.gov.uk",
+  "basePath": "/crmapi",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyHeader": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header"
+    },
+    "apiKeyQuery": {
+      "type": "apiKey",
+      "name": "subscription-key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ],
+  "x-servers": [
+    {
+      "url": "https://dev-api-customerengagement.platform.education.gov.uk"
+    }
+  ],
+  "paths": {
+    "/api/data/v9.1/incidents": {
+      "post": {
+        "operationId": "createincidentdata",
+        "summary": "CreateIncidentData",
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Body": {
+      "type": "string"
+    }
+  },
+  "tags": []
+}

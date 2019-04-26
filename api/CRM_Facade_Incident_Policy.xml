@@ -1,0 +1,31 @@
+<policies>
+    <inbound>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <set-header name="Entity-Id" exists-action="override">
+            <value>@{
+                string[] headerValues = null;
+                
+                context.Response.Headers.TryGetValue("odata-entityid", out headerValues);
+
+                string entityId = headerValues[0];
+
+                string[] entityIdParts = entityId.Split('(');
+
+                entityIdParts = entityIdParts[1].Split(')');
+
+                entityId = entityIdParts[0];
+
+                return entityId;
+            }</value>
+        </set-header>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

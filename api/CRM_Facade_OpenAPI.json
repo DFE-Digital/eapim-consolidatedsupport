@@ -6,7 +6,6 @@
     "description": "Consolidated Support CRM  API"
   },
   "host": "esfa-cs-dev.api.crm4.dynamics.com",
-  "basePath": "/crmapi",
   "schemes": [
     "https"
   ],

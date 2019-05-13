@@ -1,0 +1,50 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "ITSM API",
+        "version": "1.0"
+    },
+    "host": "dev-api-customerengagement.platform.education.gov.uk",
+    "basePath": "/v1/itsm",
+    "schemes": [
+        "https"
+    ],
+    "securityDefinitions": {
+        "apiKeyHeader": {
+            "type": "apiKey",
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header"
+        },
+        "apiKeyQuery": {
+            "type": "apiKey",
+            "name": "subscription-key",
+            "in": "query"
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ],
+    "x-servers": [
+        {
+            "url": "https://dev-api-customerengagement.platform.education.gov.uk"
+        },
+        {
+            "url": "https://c106d01-apim-custeng-westeurope-01.regional.azure-api.net"
+        }
+    ],
+    "paths": {
+        "/incident": {
+            "post": {
+                "operationId": "create-incident",
+                "summary": "Create Incident",
+                "responses": {}
+            }
+        }
+    },
+    "tags": []
+}

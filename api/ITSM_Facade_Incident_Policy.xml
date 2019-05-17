@@ -22,9 +22,9 @@
             <value>@{
                     string toReturn = null;
 
-                    JObject parsedBodyContent = context.Response.Body.As<JObject>();
+                    JObject parsedBodyContent = context.Response.Body.As&lt;JObject&gt;();
 
-                    toReturn = (string)parsedBodyContent["result"]["sys_id"];
+                    toReturn = (string)parsedBodyContent[&quot;result&quot;][&quot;sys_id&quot;];
 
                     return toReturn;
                 }</value>

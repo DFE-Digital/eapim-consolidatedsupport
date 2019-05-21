@@ -2,8 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "CRM Events API",
-        "version": "1.0",
-        "description": "Azure Logic App."
+        "version": "1.0"
     },
     "host": "dev-api-customerengagement.platform.education.gov.uk",
     "basePath": "/v1/crm-events",
@@ -43,6 +42,23 @@
             "post": {
                 "operationId": "account-created",
                 "summary": "Account Created",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {}
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "responses": {}
+            }
+        },
+        "/contact": {
+            "post": {
+                "operationId": "contact-created",
+                "summary": "Contact Created",
                 "parameters": [
                     {
                         "name": "body",

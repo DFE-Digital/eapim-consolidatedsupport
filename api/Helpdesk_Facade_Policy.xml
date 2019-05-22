@@ -1,0 +1,27 @@
+<policies>
+    <inbound>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <set-header name="Entity-Id" exists-action="override">
+            <value>@{
+                    string toReturn = null;
+
+                    JObject parsedBodyContent = context.Response.Body.As<JObject>();
+                    
+                    JToken root = (JToken)parsedBodyContent.First.First;
+
+                    toReturn = (string)root["id"];
+
+                    return toReturn;
+                }</value>
+        </set-header>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

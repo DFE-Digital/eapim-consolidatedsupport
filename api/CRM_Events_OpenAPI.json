@@ -1,86 +1,62 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "CRM Events API",
-        "version": "1.0"
-    },
-    "host": "dev-api-customerengagement.platform.education.gov.uk",
-    "basePath": "/v1/crm-events",
-    "schemes": [
-        "https"
-    ],
-    "securityDefinitions": {
-        "apiKeyHeader": {
-            "type": "apiKey",
-            "name": "Ocp-Apim-Subscription-Key",
-            "in": "header"
-        },
-        "apiKeyQuery": {
-            "type": "apiKey",
-            "name": "subscription-key",
-            "in": "query"
-        }
-    },
-    "security": [
-        {
-            "apiKeyHeader": []
-        },
-        {
-            "apiKeyQuery": []
-        }
-    ],
-    "x-servers": [
-        {
-            "url": "https://dev-api-customerengagement.platform.education.gov.uk"
-        },
-        {
-            "url": "https://c106d01-apim-custeng-westeurope-01.regional.azure-api.net"
-        }
-    ],
-    "paths": {
-        "/account": {
-            "post": {
-                "operationId": "account-created",
-                "summary": "Account Created",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": {}
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "responses": {}
+  "swagger": "2.0",
+  "info": {
+    "title": "CRM Events API",
+    "version": "1.0",
+    "description": "Internal middleware component: accepts event information from CRM for processing."
+  },
+  "basePath": "/v1/crm-events",
+  "paths": {
+    "/account": {
+      "post": {
+        "summary": "Account Created",
+        "description": "Accepts event information for the CRM event \"Account Created\".",
+        "operationId": "account-created",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-event-data"
             }
-        },
-        "/contact": {
-            "post": {
-                "operationId": "contact-created",
-                "summary": "Contact Created",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": {}
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "responses": {}
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
+    "/contact": {
+      "post": {
+        "summary": "Contact Created",
+        "description": "Accepts event information for the CRM event \"Contact Created\".",
+        "operationId": "contact-created",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-event-data"
             }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
         }
-    },
-    "definitions": {
-        "request-manual": {},
-        "ManualPathsInvokePost202ApplicationJsonResponse": {
-            "type": "object"
-        },
-        "ManualPathsInvokePost500ApplicationJsonResponse": {
-            "type": "object"
-        }
-    },
-    "tags": []
+      }
+    }
+  },
+  "definitions": {
+    "crm-event-data": {
+      "type": "object"
+    }
+  }
 }

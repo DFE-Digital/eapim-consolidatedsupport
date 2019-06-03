@@ -54,6 +54,23 @@
                 ],
                 "responses": {}
             }
+        },
+        "/users.json": {
+            "post": {
+                "operationId": "create-user",
+                "summary": "Create User",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {}
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "responses": {}
+            }
         }
     },
     "tags": []

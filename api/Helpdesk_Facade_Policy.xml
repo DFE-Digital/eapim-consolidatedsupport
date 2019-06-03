@@ -11,8 +11,10 @@
                     string toReturn = null;
 
                     JObject parsedBodyContent = context.Response.Body.As<JObject>();
+                    
+                    JToken root = (JToken)parsedBodyContent.First.First;
 
-                    toReturn = (string)parsedBodyContent["organization"]["id"];
+                    toReturn = (string)root["id"];
 
                     return toReturn;
                 }</value>

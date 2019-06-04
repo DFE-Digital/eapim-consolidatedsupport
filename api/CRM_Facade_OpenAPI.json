@@ -1,80 +1,39 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Consolidated Support CRM  API",
+    "title": "CRM API",
     "version": "1.0",
-    "description": "Consolidated Support CRM  API"
+    "description": "Provides access to CRM related operations."
   },
-  "host": "esfa-cs-dev.api.crm4.dynamics.com",
-  "schemes": [
-    "https"
-  ],
-  "securityDefinitions": {
-    "apiKeyHeader": {
-      "type": "apiKey",
-      "name": "Ocp-Apim-Subscription-Key",
-      "in": "header"
-    },
-    "apiKeyQuery": {
-      "type": "apiKey",
-      "name": "subscription-key",
-      "in": "query"
-    }
-  },
-  "security": [
-    {
-      "apiKeyHeader": []
-    },
-    {
-      "apiKeyQuery": []
-    }
-  ],
+  "basePath": "/v1/crm",
   "paths": {
-     "/api/data/v9.1/contacts": {
-      "get": {
-        "description": "Get Contact Data",
-        "operationId": "GetContactData",
+    "/incidents": {
+      "post": {
+        "summary": "Create Incident",
+        "description": "Creates an incident entity.",
+        "operationId": "create-incident",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
-            "required": false,
+            "name": "Event Data",
+            "description": "A JSON payload containing the incident data.",
+            "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/crm-data"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "produces": [
-          "application/hal+json",
-          "text/plain"
-        ],
-        "consumes": [
-          "text/plain"
-        ]
-      }
-    }
-    ,
-    "/api/data/v9.1/incidents": {
-      "post": {
-        "operationId": "createincidentdata",
-        "summary": "CreateIncidentData",
-        "responses": {
-          "204": {
-            "description": ""
+          "202": {
+            "description": "The event data was accepted for processing."
           }
         }
       }
     }
   },
   "definitions": {
-    "Body": {
-      "type": "string"
+    "crm-data": {
+      "type": "object"
     }
-  },
-  "tags": []
+  }
 }

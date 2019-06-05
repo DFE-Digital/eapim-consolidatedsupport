@@ -5,7 +5,11 @@
     "version": "1.0",
     "description": "Provides access to CRM related operations."
   },
-  "basePath": "/v1/crm",
+  "host": "esfa-cs-dev.api.crm4.dynamics.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/api/data/v9.1/accounts",
   "paths": {
     "/incidents": {
       "post": {

@@ -9,7 +9,7 @@
   "schemes": [
     "https"
   ],
-  "basePath": "/api/data/v9.1/accounts",
+  "basePath": "/api/data/v9.1",
   "paths": {
     "/incidents": {
       "post": {

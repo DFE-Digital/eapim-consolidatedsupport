@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+        <base />
+        <rewrite-uri template="/$metadata" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+        <set-body />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

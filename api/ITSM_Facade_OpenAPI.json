@@ -1,50 +1,61 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "ITSM API",
-        "version": "1.0"
-    },
-    "host": "dev-api-customerengagement.platform.education.gov.uk",
-    "basePath": "/v1/itsm",
-    "schemes": [
-        "https"
-    ],
-    "securityDefinitions": {
-        "apiKeyHeader": {
-            "type": "apiKey",
-            "name": "Ocp-Apim-Subscription-Key",
-            "in": "header"
-        },
-        "apiKeyQuery": {
-            "type": "apiKey",
-            "name": "subscription-key",
-            "in": "query"
-        }
-    },
-    "security": [
-        {
-            "apiKeyHeader": []
-        },
-        {
-            "apiKeyQuery": []
-        }
-    ],
-    "x-servers": [
-        {
-            "url": "https://dev-api-customerengagement.platform.education.gov.uk"
-        },
-        {
-            "url": "https://c106d01-apim-custeng-westeurope-01.regional.azure-api.net"
-        }
-    ],
-    "paths": {
-        "/incident": {
-            "post": {
-                "operationId": "create-incident",
-                "summary": "Create Incident",
-                "responses": {}
+  "swagger": "2.0",
+  "info": {
+    "title": "ITSM API",
+    "version": "1.0",
+    "description": "Provides access to ITSM related operations."
+  },
+  "host": "dfetest.service-now.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/api/now/v1/table",
+  "paths": {
+    "/incident": {
+      "post": {
+        "summary": "Create Incident",
+        "description": "Creates an incident entity.",
+        "operationId": "create-incident",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Incident Data",
+            "description": "A JSON payload containing the incident data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-data"
             }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The incident was created with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The ID of the created incident."
+              }
+            }
+          }
         }
+      }
     },
-    "tags": []
+    "/heart-beat": {
+      "get": {
+        "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",
+        "operationId": "heart-beat",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The standard/only response from the method."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "itsm-data": {
+      "type": "object"
+    }
+  }
 }

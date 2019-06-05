@@ -19,7 +19,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "Event Data",
+            "name": "Incident Data",
             "description": "A JSON payload containing the incident data.",
             "required": true,
             "schema": {
@@ -28,8 +28,13 @@
           }
         ],
         "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
+          "204": {
+            "description": "The incident was created with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The ID of the created incident."
+            }
           }
         }
       }

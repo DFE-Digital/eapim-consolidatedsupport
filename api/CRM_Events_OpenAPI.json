@@ -5,11 +5,7 @@
     "version": "1.0",
     "description": "Internal middleware component: accepts event information from CRM for processing."
   },
-  "host": "esfa-cs-dev.api.crm4.dynamics.com",
-  "schemes": [
-    "https"
-  ],
-  "basePath": "/api/data/v9.1",
+  "basePath": "/v1/crm-events",
   "paths": {
     "/account": {
       "post": {

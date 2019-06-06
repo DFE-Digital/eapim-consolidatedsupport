@@ -10,7 +10,7 @@
             <value>@{
                     string toReturn = null;
 
-                    JObject parsedBodyContent = context.Response.Body.As<JObject>();
+                    JObject parsedBodyContent = context.Response.Body.As&lt;JObject&gt;();
                     
                     JToken root = (JToken)parsedBodyContent.First.First;
 

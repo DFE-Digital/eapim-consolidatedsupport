@@ -1,77 +1,90 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Helpdesk API",
-        "version": "1.0"
-    },
-    "host": "dev-api-customerengagement.platform.education.gov.uk",
-    "basePath": "/v1/helpdesk",
-    "schemes": [
-        "https"
-    ],
-    "securityDefinitions": {
-        "apiKeyHeader": {
-            "type": "apiKey",
-            "name": "Ocp-Apim-Subscription-Key",
-            "in": "header"
-        },
-        "apiKeyQuery": {
-            "type": "apiKey",
-            "name": "subscription-key",
-            "in": "query"
-        }
-    },
-    "security": [
-        {
-            "apiKeyHeader": []
-        },
-        {
-            "apiKeyQuery": []
-        }
-    ],
-    "x-servers": [
-        {
-            "url": "https://dev-api-customerengagement.platform.education.gov.uk"
-        },
-        {
-            "url": "https://c106d01-apim-custeng-westeurope-01.regional.azure-api.net"
-        }
-    ],
-    "paths": {
-        "/organizations.json": {
-            "post": {
-                "operationId": "create-organisation",
-                "summary": "Create Organisation",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": {}
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "responses": {}
+  "swagger": "2.0",
+  "info": {
+    "title": "Helpdesk API",
+    "version": "1.0",
+    "description": "Provides access to Helpdesk related operations."
+  },
+  "host": "middleware-poc2.zendesk.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/api/v2",
+  "paths": {
+    "/organizations.json": {
+      "post": {
+        "summary": "Create Organisation",
+        "description": "Creates an organisation entity.",
+        "operationId": "create-organisation",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Organisation Data",
+            "description": "A JSON payload containing the organisation data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-data"
             }
-        },
-        "/users.json": {
-            "post": {
-                "operationId": "create-user",
-                "summary": "Create User",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": {}
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "responses": {}
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The organisation was created with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The ID of the created organisation."
+              }
             }
+          }
         }
+      }
     },
-    "tags": []
+	"/users.json": {
+      "post": {
+        "summary": "Create User",
+        "description": "Creates a user entity.",
+        "operationId": "create-user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "User Data",
+            "description": "A JSON payload containing the user data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-data"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The user was created with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The ID of the created user."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/heart-beat": {
+      "get": {
+        "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",
+        "operationId": "heart-beat",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The standard/only response from the method."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "helpdesk-data": {
+      "type": "object"
+    }
+  }
 }

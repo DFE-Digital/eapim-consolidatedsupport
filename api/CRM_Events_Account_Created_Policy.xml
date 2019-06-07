@@ -1,10 +1,11 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service backend-id="LogicApp_s113d01-accountdisp-la-02_s113d01-dispatchers" />
-        <set-method>POST</set-method>
-        <rewrite-uri template="/manual/paths/invoke/?api-version=2016-06-01&amp;sp=/triggers/manual/run&amp;sv=1.0&amp;sig={{crm-events-api_manual-invoke_5ce2a58dc7f31925d3559b24}}" />
-        <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+        <set-backend-service base-url="{{c106d01-apim-createaccountlogicapp-baseUrl}}" />
+        <set-method id="apim-generated-policy">POST</set-method>
+        <rewrite-uri id="apim-generated-policy" template="{{c106d01-apim-createaccountlogicapp-rewriteUrl}}" />
+        <set-header id="apim-generated-policy" name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+        <set-header id="apim-generated-policy" name="Authorization" exists-action="delete" />
     </inbound>
     <backend>
         <base />

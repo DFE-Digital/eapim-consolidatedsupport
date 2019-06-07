@@ -1,0 +1,51 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Helpdesk Events API",
+    "version": "1.0",
+    "description": "Internal middleware component: accepts event information from Helpdesk for processing."
+  },
+  "basePath": "/v1/helpdesk-events",
+  "paths": {
+    "/account": {
+      "post": {
+        "summary": "Ticket Created",
+        "description": "Accepts event information for the CRM event \"Ticket Created\".",
+        "operationId": "ticket-created",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Ticket Data",
+            "description": "A JSON payload containing the ticket data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
+    "/heart-beat": {
+      "get": {
+        "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",
+        "operationId": "heart-beat",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The standard/only response from the method."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "helpdesk-event-data": {
+      "type": "object"
+    }
+  }
+}

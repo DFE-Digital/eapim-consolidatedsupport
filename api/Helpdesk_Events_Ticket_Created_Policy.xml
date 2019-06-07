@@ -1,11 +1,11 @@
 <policies>
     <inbound>
         <check-header name="Authorization" failed-check-httpcode="401" failed-check-error-message="Authorization Failed" ignore-case="true">
-            <value>Basic emVuZGVzazpYdHJ5Z3c=</value>
+            <value>{{helpdesk-events-basic-auth-digest}}</value>
         </check-header>
-        <set-backend-service base-url="{{c106t01-apim-createticketlogicapp-baseUrl}}" />
+        <set-backend-service base-url="{{c106d01-apim-createticketlogicapp-baseUrl}}" />
         <set-method id="apim-generated-policy">POST</set-method>
-        <rewrite-uri id="apim-generated-policy" template="{{c106t01-apim-createticketlogicapp-rewriteUrl}}" />
+        <rewrite-uri id="apim-generated-policy" template="{{c106d01-apim-createticketlogicapp-rewriteUrl}}" />
         <set-header id="apim-generated-policy" name="Ocp-Apim-Subscription-Key" exists-action="delete" />
         <set-header id="apim-generated-policy" name="Authorization" exists-action="delete" />
     </inbound>

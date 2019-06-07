@@ -7,7 +7,7 @@
   },
   "basePath": "/v1/helpdesk-events",
   "paths": {
-    "/account": {
+    "/ticket": {
       "post": {
         "summary": "Ticket Created",
         "description": "Accepts event information for the CRM event \"Ticket Created\".",

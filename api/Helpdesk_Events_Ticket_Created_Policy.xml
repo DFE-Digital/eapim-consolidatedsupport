@@ -1,6 +1,6 @@
 <policies>
     <inbound>
-        <check-header name="Authorization" failed-check-httpcode="401" failed-check-error-message="Authorization Failed" ignore-case="true">
+        <check-header name="Authorization" failed-check-httpcode="401" ignore-case="false">
             <value>{{helpdesk-events-basic-auth-digest}}</value>
         </check-header>
         <set-backend-service base-url="{{c106d01-apim-createticketlogicapp-baseUrl}}" />

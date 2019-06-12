@@ -10,8 +10,36 @@
     "/ticket": {
       "post": {
         "summary": "Ticket Created",
-        "description": "Accepts event information for the CRM event \"Ticket Created\".",
+        "description": "Accepts event information for the helpdesk event \"Ticket Created\".",
         "operationId": "ticket-created",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Ticket Data",
+            "description": "A JSON payload containing the ticket data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      },
+      "put": {
+        "summary": "Ticket Updated",
+        "description": "Accepts event information for the helpdesk event \"Ticket Updated\".",
+        "operationId": "ticket-updated",
         "parameters": [
           {
             "in": "header",

@@ -40,6 +40,35 @@
         }
       }
     },
+    "/annotations": {
+      "post": {
+        "summary": "Create Annotation",
+        "description": "Creates an annotation entity.",
+        "operationId": "create-annotation",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Annotation Data",
+            "description": "A JSON payload containing the annotation data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-data"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The annotation was created with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The ID of the created annotation."
+              }
+            }
+          }
+        }
+      }
+    },
     "/heart-beat": {
       "get": {
         "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",

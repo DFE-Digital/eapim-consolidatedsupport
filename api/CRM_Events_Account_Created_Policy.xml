@@ -1,9 +1,9 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="{{c106d01-apim-createaccountlogicapp-baseUrl}}" />
+        <set-backend-service base-url="{{createaccountlogicapp-baseUrl}}" />
         <set-method id="apim-generated-policy">POST</set-method>
-        <rewrite-uri id="apim-generated-policy" template="{{c106d01-apim-createaccountlogicapp-rewriteUrl}}" />
+        <rewrite-uri id="apim-generated-policy" template="{{createaccountlogicapp-rewriteUrl}}" />
         <set-header id="apim-generated-policy" name="Ocp-Apim-Subscription-Key" exists-action="delete" />
         <set-header id="apim-generated-policy" name="Authorization" exists-action="delete" />
     </inbound>

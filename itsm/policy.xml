@@ -1,0 +1,25 @@
+<policies>
+    <inbound>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <set-header name="Entity-Id" exists-action="override">
+            <value>@{
+                    string toReturn = null;
+
+                    JObject parsedBodyContent = context.Response.Body.As&lt;JObject&gt;();
+
+                    toReturn = (string)parsedBodyContent[&quot;result&quot;][&quot;sys_id&quot;];
+
+                    return toReturn;
+                }</value>
+        </set-header>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -35,11 +35,13 @@
             "description": "The event data was accepted for processing."
           }
         }
-      },
-      "put": {
-        "summary": "Ticket Updated",
-        "description": "Accepts event information for the helpdesk event \"Ticket Updated\".",
-        "operationId": "ticket-updated",
+      }
+    },
+    "/comment": {
+      "post": {
+        "summary": "Comment Created",
+        "description": "Accepts event information for the helpdesk event \"Comment Created\".",
+        "operationId": "comment-created",
         "parameters": [
           {
             "in": "header",

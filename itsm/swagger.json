@@ -38,7 +38,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/incident/{id}": {
       "put": {
         "summary": "Update Incident",
         "description": "Updates an incident entity.",

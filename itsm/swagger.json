@@ -38,6 +38,25 @@
             }
           }
         }
+      },
+      "put": {
+        "summary": "Update Incident",
+        "description": "Updates an incident entity.",
+        "operationId": "update-incident",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the incident to update."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The incident was updated with success."
+          }
+        }
       }
     },
     "/heart-beat": {

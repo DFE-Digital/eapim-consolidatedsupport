@@ -52,6 +52,15 @@
             "type": "string",
             "required": true,
             "description": "The ID of the incident to update."
+          },
+          {
+            "in": "body",
+            "name": "Incident Data",
+            "description": "A JSON payload containing the incident data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-data"
+            }
           }
         ],
         "responses": {

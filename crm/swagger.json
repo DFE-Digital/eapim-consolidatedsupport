@@ -69,6 +69,35 @@
         }
       }
     },
+    "/contacts": {
+      "post": {
+        "summary": "Create Contact",
+        "description": "Creates a contact entity.",
+        "operationId": "create-contact",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Contact Data",
+            "description": "A JSON payload containing the contact data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-data"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The contact was created with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The id of the created contact."
+              }
+            }
+          }
+        }
+      }
+    },
     "/incidents": {
       "post": {
         "summary": "Create Incident",

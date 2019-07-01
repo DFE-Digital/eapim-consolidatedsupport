@@ -40,6 +40,36 @@
         }
       }
     },
+    "/incident/{id}": {
+      "put": {
+        "summary": "Update Incident",
+        "description": "Updates an incident entity.",
+        "operationId": "update-incident",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the incident to update."
+          },
+          {
+            "in": "body",
+            "name": "Incident Data",
+            "description": "A JSON payload containing the incident data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The incident was updated with success."
+          }
+        }
+      }
+    },
     "/heart-beat": {
       "get": {
         "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",

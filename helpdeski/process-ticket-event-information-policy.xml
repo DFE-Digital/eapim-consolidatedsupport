@@ -4,8 +4,6 @@
     <set-backend-service base-url="{{helpdeskilogicapp-baseUrl}}" />
     <set-method>POST</set-method>
     <rewrite-uri template="{{helpdeskilogicapp-rewriteUrl}}" />
-    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
-    <set-header name="Authorization" exists-action="delete" />
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
       <openid-config url="{{eapim-oauth-url}}" />
       <required-claims>

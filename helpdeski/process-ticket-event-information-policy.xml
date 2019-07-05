@@ -8,7 +8,7 @@
       <openid-config url="{{eapim-oauth-url}}" />
       <required-claims>
         <claim name="aud">
-          <value>{{orchestrator-aud-claim}}</value>
+          <value>{{helpdeski-aud-claim}}</value>
         </claim>
       </required-claims>
     </validate-jwt>

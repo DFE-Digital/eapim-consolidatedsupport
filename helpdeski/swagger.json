@@ -1,0 +1,54 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Helpdesk Intermediary API",
+    "version": "1.0",
+    "description": "Internal middleware component: takes large, singular events from the helpdesk system, and breaks them down into smaller, virtual events, executing them synchronously."
+  },
+  "basePath": "/v1/helpdeski",
+  "paths": {
+    "/ticket": {
+      "put": {
+        "summary": "Process Ticket Event Information",
+        "description": "Accepts ticket created/updated event information, and synchronously invokes smaller middleware events based on the current data stored in Rosetta Stone.",
+        "operationId": "process-ticket-event-information",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ticket-event-information"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The event data was accepted for processing."
+          },
+          "500": {
+            "description": "An unexpected error has occurred - please get in touch with us so we can check our logs!"
+          }
+        }
+      }
+    },
+    "/heart-beat": {
+      "get": {
+        "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",
+        "operationId": "heart-beat",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The standard/only response from the method."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ticket-event-information": {
+      "type": "object"
+    }
+  }
+}

@@ -4,10 +4,10 @@
             <value>{{helpdesk-events-basic-auth-digest}}</value>
         </check-header>
         <set-backend-service base-url="{{createticketlogicapp-baseUrl}}" />
-        <set-method id="apim-generated-policy">POST</set-method>
-        <rewrite-uri id="apim-generated-policy" template="{{createticketlogicapp-rewriteUrl}}" />
-        <set-header id="apim-generated-policy" name="Ocp-Apim-Subscription-Key" exists-action="delete" />
-        <set-header id="apim-generated-policy" name="Authorization" exists-action="delete" />
+        <set-method>POST</set-method>
+        <rewrite-uri template="{{createticketlogicapp-rewriteUrl}}" />
+        <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+        <set-header name="Authorization" exists-action="delete" />
     </inbound>
     <backend>
         <base />

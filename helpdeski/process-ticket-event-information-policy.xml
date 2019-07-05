@@ -1,9 +1,9 @@
 <policies>
   <inbound>
     <base />
-    <set-backend-service base-url="{{helpdeskilogicapp-baseUrl}}" />
+    <set-backend-service base-url="{{pteilogicapp-baseUrl}}" />
     <set-method>POST</set-method>
-    <rewrite-uri template="{{helpdeskilogicapp-rewriteUrl}}" />
+    <rewrite-uri template="{{pteilogicapp-rewriteUrl}}" />
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
       <openid-config url="{{eapim-oauth-url}}" />
       <required-claims>

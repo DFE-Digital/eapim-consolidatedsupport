@@ -128,6 +128,36 @@
         }
       }
     },
+    "/contacts({id})": {
+      "patch": {
+        "summary": "Update Contact",
+        "description": "Updates a contact entity.",
+        "operationId": "update-contact",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the contact to update."
+          },
+          {
+            "in": "body",
+            "name": "Contact Data",
+            "description": "A JSON payload containing the contact data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-data"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The contact was updated with success."
+          }
+        }
+      }
+    },
     "/incidents": {
       "post": {
         "summary": "Create Incident",

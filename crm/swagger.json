@@ -38,12 +38,21 @@
             }
           }
         }
-      },
+      }
+    },
+    "/accounts({id})": {
       "patch": {
         "summary": "Update Account",
         "description": "Updates an account entity.",
         "operationId": "update-account",
         "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the account to update."
+          },
           {
             "in": "body",
             "name": "Account Data",

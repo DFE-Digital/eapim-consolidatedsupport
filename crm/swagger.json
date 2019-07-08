@@ -38,6 +38,27 @@
             }
           }
         }
+      },
+      "patch": {
+        "summary": "Update Account",
+        "description": "Updates an account entity.",
+        "operationId": "update-account",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Account Data",
+            "description": "A JSON payload containing the account data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-data"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The account was updated with success."
+          }
+        }
       }
     },
     "/annotations": {

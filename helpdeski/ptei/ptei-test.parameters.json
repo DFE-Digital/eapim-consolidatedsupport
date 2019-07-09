@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "LogicAppName": {
+      "value": "s113t01-la-05"
+    },
+    "MiddlewareEnvironmentPrefix": {
+      "value": "s113t01"
+    },
+    "DataServicesKeyName": {
+      "value": "c106t01-apim-custeng-dataservicessubscriptionkey"
+    },
+    "RosettaStoneApiTokenRequestPayloadName": {
+      "value": "s113t01-fa-02-rosettastoneapitokenrequestpayload"
+    },
+    "OrchestratorApiTokenRequestPayloadName": {
+      "value": "s113t01-fa-05-orchestratorapitokenrequestpayload"
+    },
+    "ApimBaseUrl": {
+      "value": "https://test-api-customerengagement.platform.education.gov.uk/"
+    }
+  }
+}

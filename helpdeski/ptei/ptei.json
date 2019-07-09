@@ -1,0 +1,688 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "LogicAppName": {
+      "defaultValue": "s113d01-la-05",
+      "type": "String"
+    },
+    "MiddlewareEnvironmentPrefix": {
+      "defaultValue": "s113d01",
+      "type": "String"
+    },
+    "DataServicesKeyName": {
+      "defaultValue": "c106d01-apim-custeng-dataservicessubscriptionkey",
+      "type": "String"
+    },
+    "RosettaStoneApiTokenRequestPayloadName": {
+      "defaultValue": "s113d01-fa-02-rosettastoneapitokenrequestpayload",
+      "type": "String"
+    },
+    "OrchestratorApiTokenRequestPayloadName": {
+      "defaultValue": "s113d01-fa-05-orchestratorapitokenrequestpayload",
+      "type": "String"
+    },
+    "ApimBaseUrl": {
+      "defaultValue": "https://dev-api-customerengagement.platform.education.gov.uk/",
+      "type": "String"
+    }
+  },
+  "variables": {
+    "OAuthTokenEndpoint": "https://login.microsoftonline.com/9c7d9dd3-840c-4b3f-818e-552865082e16/oauth2/token",
+    "KeyVaultUrlBase": "[concat('https://', parameters('MiddlewareEnvironmentPrefix'), '-kv-01.vault.azure.net/secrets/')]",
+    "KeyVaultUrlSuffix": "?api-version=2016-10-01",
+    "DataServicesKeyUrl": "[concat(variables('KeyVaultUrlBase'), parameters('DataServicesKeyName'), variables('KeyVaultUrlSuffix'))]",
+    "RosettaStoneApiTokenPayloadUrl": "[concat(variables('KeyVaultUrlBase'), parameters('RosettaStoneApiTokenRequestPayloadName'), variables('KeyVaultUrlSuffix'))]",
+    "OrchestratorApiTokenRequestPayloadUrl": "[concat(variables('KeyVaultUrlBase'), parameters('OrchestratorApiTokenRequestPayloadName'), variables('KeyVaultUrlSuffix'))]",
+    "RegisterTranslateSorToTargetUrl": "[concat(parameters('ApimBaseUrl'), 'v1/rosetta-stone/register-translate-sor-to-target')]",
+    "ProcessEventInformationUrl": "[concat(parameters('ApimBaseUrl'), 'v1/orchestrator/process-event-information')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppName')]",
+      "location": "westeurope",
+      "tags": {
+        "Environment": "Dev",
+        "Parent Business": "TBC",
+        "Service Offering": "TBC"
+      },
+      "identity": {
+        "principalId": null,
+        "tenantId": null,
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "manual": {
+              "type": "Request",
+              "kind": "Http",
+              "inputs": {
+                "schema": {
+                  "properties": {
+                    "ticket": {
+                      "properties": {
+                        "organization": {
+                          "properties": {
+                            "custom_fields": {
+                              "properties": {
+                                "phone": {
+                                  "type": "string"
+                                },
+                                "phone2": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "requester": {
+                          "properties": {
+                            "email": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "actions": {
+            "Check_results_are_more_than_zero_(CNT)": {
+              "actions": {
+                "Set_eventDescription_=_\"updated\"_(2)": {
+                  "runAfter": {},
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "eventDescription",
+                    "value": "updated"
+                  }
+                }
+              },
+              "runAfter": {
+                "Parse_Rosetta_Stone_Results_(CNT)": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Set_eventDescription_=_\"created\"_(2)": {
+                    "runAfter": {},
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "eventDescription",
+                      "value": "created"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "greater": [
+                      "@length(body('Parse_Rosetta_Stone_Results_(CNT)'))",
+                      0
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "Check_results_are_more_than_zero_(ORG)": {
+              "actions": {
+                "Set_eventDescription_=_\"updated\"": {
+                  "runAfter": {},
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "eventDescription",
+                    "value": "updated"
+                  }
+                }
+              },
+              "runAfter": {
+                "Initialise_the_eventDescription_variable": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Set_eventDescription_=_\"created\"": {
+                    "runAfter": {},
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "eventDescription",
+                      "value": "created"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "greater": [
+                      "@length(body('Parse_Rosetta_Stone_Results_(ORG)'))",
+                      0
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "Get_Orchestrator_OAuth_Token": {
+              "runAfter": {
+                "Parse_fa-05-orchestratorapitokenrequestpayload": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": "@body('Parse_fa-05-orchestratorapitokenrequestpayload')?['value']",
+                "headers": {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                "method": "POST",
+                "uri": "[variables('OAuthTokenEndpoint')]"
+              }
+            },
+            "Get_Rosetta_Stone_OAuth_Token": {
+              "runAfter": {
+                "Parse_fa-02-rosettastoneapitokenrequestpayload": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": "@body('Parse_fa-02-rosettastoneapitokenrequestpayload')?['value']",
+                "headers": {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                "method": "POST",
+                "uri": "[variables('OAuthTokenEndpoint')]"
+              }
+            },
+            "Get_apim-custeng-dataservicessubscriptionkey_from_KeyVault": {
+              "runAfter": {
+                "Parse_Rosetta_Stone_OAuth_Token": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "authentication": {
+                  "audience": "https://vault.azure.net",
+                  "type": "ManagedServiceIdentity"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "GET",
+                "uri": "[variables('DataServicesKeyUrl')]"
+              }
+            },
+            "Get_fa-02-rosettastoneapitokenrequestpayload_from_KeyVault": {
+              "runAfter": {},
+              "type": "Http",
+              "inputs": {
+                "authentication": {
+                  "audience": "https://vault.azure.net",
+                  "type": "ManagedServiceIdentity"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "GET",
+                "uri": "[variables('RosettaStoneApiTokenPayloadUrl')]"
+              }
+            },
+            "Get_fa-05-orchestratorapitokenrequestpayload_from_KeyVault": {
+              "runAfter": {
+                "Parse_Rosetta_Stone_Results_(ORG)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "authentication": {
+                  "audience": "https://vault.azure.net",
+                  "type": "ManagedServiceIdentity"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "GET",
+                "uri": "[variables('OrchestratorApiTokenRequestPayloadUrl')]"
+              }
+            },
+            "Initialise_the_eventDescription_variable": {
+              "runAfter": {
+                "Parse_Orchestrator_OAuth_Token": [
+                  "Succeeded"
+                ]
+              },
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "eventDescription",
+                    "type": "String"
+                  }
+                ]
+              }
+            },
+            "OK_Response": {
+              "runAfter": {
+                "Trigger_the_helpdeski-user-eventDescription_event_synchronously": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200
+              }
+            },
+            "Parse_Orchestrator_OAuth_Token": {
+              "runAfter": {
+                "Get_Orchestrator_OAuth_Token": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_Orchestrator_OAuth_Token')",
+                "schema": {
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "string"
+                    },
+                    "expires_on": {
+                      "type": "string"
+                    },
+                    "ext_expires_in": {
+                      "type": "string"
+                    },
+                    "not_before": {
+                      "type": "string"
+                    },
+                    "resource": {
+                      "type": "string"
+                    },
+                    "token_type": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_Rosetta_Stone_OAuth_Token": {
+              "runAfter": {
+                "Get_Rosetta_Stone_OAuth_Token": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_Rosetta_Stone_OAuth_Token')",
+                "schema": {
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "string"
+                    },
+                    "expires_on": {
+                      "type": "string"
+                    },
+                    "ext_expires_in": {
+                      "type": "string"
+                    },
+                    "not_before": {
+                      "type": "string"
+                    },
+                    "resource": {
+                      "type": "string"
+                    },
+                    "token_type": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_Rosetta_Stone_Results_(CNT)": {
+              "runAfter": {
+                "Quiz_Rosetta_Stone_for_User_ID": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Quiz_Rosetta_Stone_for_User_ID')",
+                "schema": {
+                  "items": {
+                    "properties": {
+                      "SourceEntityBK": {
+                        "type": "string"
+                      },
+                      "SourceSorBK": {
+                        "type": "string"
+                      },
+                      "SourceSorUIDVal": {
+                        "type": "string"
+                      },
+                      "TargetSorBK": {
+                        "type": "string"
+                      },
+                      "TargetSorUIDVal": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "SourceSorBK",
+                      "SourceEntityBK",
+                      "SourceSorUIDVal",
+                      "TargetSorBK",
+                      "TargetSorUIDVal"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "Parse_Rosetta_Stone_Results_(ORG)": {
+              "runAfter": {
+                "Quiz_Rosetta_Stone_for_Organization_ID": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Quiz_Rosetta_Stone_for_Organization_ID')",
+                "schema": {
+                  "items": {
+                    "properties": {
+                      "SourceEntityBK": {
+                        "type": "string"
+                      },
+                      "SourceSorBK": {
+                        "type": "string"
+                      },
+                      "SourceSorUIDVal": {
+                        "type": "string"
+                      },
+                      "TargetSorBK": {
+                        "type": "string"
+                      },
+                      "TargetSorUIDVal": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "SourceSorBK",
+                      "SourceEntityBK",
+                      "SourceSorUIDVal",
+                      "TargetSorBK",
+                      "TargetSorUIDVal"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "Parse_apim-custeng-dataservicessubscriptionkey": {
+              "runAfter": {
+                "Get_apim-custeng-dataservicessubscriptionkey_from_KeyVault": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_apim-custeng-dataservicessubscriptionkey_from_KeyVault')",
+                "schema": {
+                  "properties": {
+                    "attributes": {
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "recoveryLevel": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_fa-02-rosettastoneapitokenrequestpayload": {
+              "runAfter": {
+                "Get_fa-02-rosettastoneapitokenrequestpayload_from_KeyVault": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_fa-02-rosettastoneapitokenrequestpayload_from_KeyVault')",
+                "schema": {
+                  "properties": {
+                    "attributes": {
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "recoveryLevel": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_fa-05-orchestratorapitokenrequestpayload": {
+              "runAfter": {
+                "Get_fa-05-orchestratorapitokenrequestpayload_from_KeyVault": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_fa-05-orchestratorapitokenrequestpayload_from_KeyVault')",
+                "schema": {
+                  "properties": {
+                    "attributes": {
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "recoveryLevel": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Quiz_Rosetta_Stone_for_Organization_ID": {
+              "runAfter": {
+                "Parse_apim-custeng-dataservicessubscriptionkey": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": {
+                  "SourceEntityBK": "ORG",
+                  "SourceSorBK": "HD",
+                  "SourceSorUIDVal": "@{triggerBody()?['ticket']?['organization']?['id']}",
+                  "TargetSorBK": "SCRM"
+                },
+                "headers": {
+                  "Authorization": "Bearer @{body('Parse_Rosetta_Stone_OAuth_Token')?['access_token']}",
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                },
+                "method": "POST",
+                "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
+              }
+            },
+            "Quiz_Rosetta_Stone_for_User_ID": {
+              "runAfter": {
+                "Trigger_the_helpdeski-organization-eventDescription_event_synchronously": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": {
+                  "SourceEntityBK": "CNT",
+                  "SourceSorBK": "HD",
+                  "SourceSorUIDVal": "@{triggerBody()?['ticket']?['requester']?['id']}",
+                  "TargetSorBK": "SCRM"
+                },
+                "headers": {
+                  "Authorization": "Bearer @{body('Parse_Rosetta_Stone_OAuth_Token')?['access_token']}",
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                },
+                "method": "POST",
+                "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
+              }
+            },
+            "Trigger_the_helpdeski-organization-eventDescription_event_synchronously": {
+              "runAfter": {
+                "Check_results_are_more_than_zero_(ORG)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": {
+                  "eventIdentifier": {
+                    "eventDescription": "@{variables('eventDescription')}",
+                    "systemEntity": "organization",
+                    "systemName": "helpdeski"
+                  },
+                  "eventInformation": "@triggerBody()"
+                },
+                "headers": {
+                  "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                },
+                "method": "POST",
+                "uri": "[variables('ProcessEventInformationUrl')]"
+              }
+            },
+            "Trigger_the_helpdeski-user-eventDescription_event_synchronously": {
+              "runAfter": {
+                "Check_results_are_more_than_zero_(CNT)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": {
+                  "eventIdentifier": {
+                    "eventDescription": "@{variables('eventDescription')}",
+                    "systemEntity": "user",
+                    "systemName": "helpdeski"
+                  },
+                  "eventInformation": "@triggerBody()"
+                },
+                "headers": {
+                  "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                },
+                "method": "POST",
+                "uri": "[variables('ProcessEventInformationUrl')]"
+              }
+            }
+          },
+          "outputs": {}
+        }
+      }
+    }
+  ]
+}

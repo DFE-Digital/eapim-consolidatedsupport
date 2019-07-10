@@ -7,6 +7,36 @@
   },
   "basePath": "/v1/helpdesk-events",
   "paths": {
+    "/comment": {
+      "post": {
+        "summary": "Comment Created",
+        "description": "Accepts event information for the helpdesk event \"Comment Created\".",
+        "operationId": "comment-created",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Ticket Data",
+            "description": "A JSON payload containing the ticket data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
     "/ticket": {
       "post": {
         "summary": "Ticket Created",
@@ -35,13 +65,11 @@
             "description": "The event data was accepted for processing."
           }
         }
-      }
-    },
-    "/comment": {
-      "post": {
-        "summary": "Comment Created",
-        "description": "Accepts event information for the helpdesk event \"Comment Created\".",
-        "operationId": "comment-created",
+      },
+      "put": {
+        "summary": "Ticket Updated",
+        "description": "Accepts event information for the helpdesk event \"Ticket Updated\".",
+        "operationId": "ticket-updated",
         "parameters": [
           {
             "in": "header",

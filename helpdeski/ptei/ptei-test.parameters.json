@@ -15,7 +15,7 @@
       "value": "s113t01-fa-02-rosettastoneapitokenrequestpayload"
     },
     "OrchestratorApiTokenRequestPayloadName": {
-      "value": "s113t01-fa-05-orchestratorapitokenrequestpayload"
+      "value": "s113t01-la-05-orchestratorapitokenrequestpayload"
     },
     "ApimBaseUrl": {
       "value": "https://test-api-customerengagement.platform.education.gov.uk/"

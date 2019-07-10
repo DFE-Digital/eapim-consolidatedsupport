@@ -189,7 +189,7 @@
     },
     "/incidents({id})": {
       "patch": {
-        "summary": "Update Incident.",
+        "summary": "Update Incident",
         "description": "Updates an incident entity.",
         "operationId": "update-incident",
         "parameters": [

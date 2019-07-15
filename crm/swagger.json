@@ -41,6 +41,28 @@
       }
     },
     "/accounts({id})": {
+      "get": {
+        "summary": "Get Account",
+        "description": "Gets an account entity.",
+        "operationId": "get-account",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the account to get."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The account was found."
+          },
+          "404": {
+            "description": "The account does not exist."
+          }
+        }
+      },
       "patch": {
         "summary": "Update Account",
         "description": "Updates an account entity.",

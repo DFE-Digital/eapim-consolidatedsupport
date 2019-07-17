@@ -7,7 +7,7 @@
   },
   "basePath": "/v1/crm-events",
   "paths": {
-    "/account": {
+    "/account-created": {
       "post": {
         "summary": "Account Created",
         "description": "Accepts event information for the CRM event \"Account Created\".",
@@ -30,11 +30,57 @@
         }
       }
     },
-    "/contact": {
+    "/account-updated": {
+      "post": {
+        "summary": "Account Updated",
+        "description": "Accepts event information for the CRM event \"Account Updated\".",
+        "operationId": "account-updated",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
+    "/contact-created": {
       "post": {
         "summary": "Contact Created",
         "description": "Accepts event information for the CRM event \"Contact Created\".",
         "operationId": "contact-created",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
+    "/contact-updated": {
+      "post": {
+        "summary": "Contact Updated",
+        "description": "Accepts event information for the CRM event \"Contact Updated\".",
+        "operationId": "contact-updated",
         "parameters": [
           {
             "in": "body",

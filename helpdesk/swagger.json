@@ -40,6 +40,36 @@
         }
       }
     },
+    "/organizations/{id}.json": {
+      "put": {
+        "summary": "Update Organisation",
+        "description": "Updates an organisation entity.",
+        "operationId": "update-organisation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The id of the organisation in which to update."
+          },
+          {
+            "in": "body",
+            "name": "Organisation Data",
+            "description": "A partial organisation entity, containing the fields in which to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The organisation was updated with success."
+          }
+        }
+      }
+    },
     "/tickets/{id}/tags.json": {
       "delete": {
         "summary": "Delete Ticket Tags",

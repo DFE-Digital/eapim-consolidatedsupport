@@ -128,6 +128,36 @@
         }
       }
     },
+    "/users/{id}.json": {
+      "put": {
+        "summary": "Update User",
+        "description": "Updates a user entity.",
+        "operationId": "update-user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The id of the user in which to update."
+          },
+          {
+            "in": "body",
+            "name": "User Data",
+            "description": "A JSON payload containing the user data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user was updated with success."
+          }
+        }
+      }
+    },
     "/heart-beat": {
       "get": {
         "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",

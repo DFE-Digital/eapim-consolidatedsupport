@@ -6,13 +6,13 @@
     <choose>
       <when condition="@(context.Request.OriginalUrl.Query.GetValueOrDefault("escalated") == "true")">
         <!-- Send to Escalated Dispatcher -->
-        <set-backend-service base-url="{{ticketuaelogicapp-baseUrl}}" />
-        <rewrite-uri template="{{ticketuaelogicapp-rewriteUrl}}" />
+        <set-backend-service base-url="{{ticketescclosedlogicapp-baseUrl}}" />
+        <rewrite-uri template="{{ticketescclosedlogicapp-rewriteUrl}}" />
       </when>
       <otherwise>
-        <!-- Send to regular Ticket Created Dispatcher -->
-        <set-backend-service base-url="{{createticketlogicapp-baseUrl}}" />
-        <rewrite-uri template="{{createticketlogicapp-rewriteUrl}}" />
+        <!-- Send to regular Ticket Closed Dispatcher -->
+        <set-backend-service base-url="{{ticketclosedlogicapp-baseUrl}}" />
+        <rewrite-uri template="{{ticketclosedlogicapp-rewriteUrl}}" />
       </otherwise>
     </choose>
     <set-method>POST</set-method>

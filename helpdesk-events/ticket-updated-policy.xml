@@ -1,21 +1,32 @@
 <policies>
-    <inbound>
-        <check-header name="Authorization" failed-check-httpcode="401" ignore-case="false">
-            <value>{{helpdesk-events-basic-auth-digest}}</value>
-        </check-header>
+  <inbound>
+    <check-header name="Authorization" failed-check-httpcode="401" ignore-case="false">
+      <value>{{helpdesk-events-basic-auth-digest}}</value>
+    </check-header>
+    <choose>
+      <when condition="@(context.Request.OriginalUrl.Query.GetValueOrDefault("escalated") == "true")">
+        <!-- Send to Escalated Dispatcher -->
+        <set-backend-service base-url="{{ticketesclogicapp-baseUrl}}" />
+        <rewrite-uri template="{{ticketesclogicapp-rewriteUrl}}" />
+      </when>
+      <otherwise>
+        <!-- Send to regular Ticket Updated Dispatcher -->
         <set-backend-service base-url="{{ticketupdatedlogicapp-baseUrl}}" />
-        <set-method>POST</set-method>
         <rewrite-uri template="{{ticketupdatedlogicapp-rewriteUrl}}" />
-        <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
-        <set-header name="Authorization" exists-action="delete" />
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+      </otherwise>
+    </choose>
+    <set-method>POST</set-method>
+    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+    <set-header name="Authorization" exists-action="delete" />
+    <set-query-parameter name="escalated" exists-action="delete" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

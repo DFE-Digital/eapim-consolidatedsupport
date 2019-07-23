@@ -4,7 +4,7 @@
       <value>{{helpdesk-events-basic-auth-digest}}</value>
     </check-header>
     <choose>
-      <when condition="@(context.Request.OriginalUrl.Query.GetValueOrDefault("escalated") == "true")">
+      <when condition="@(context.Request.OriginalUrl.Query.GetValueOrDefault(&quot;escalated&quot;) == &quot;true&quot;)">
         <!-- Send to Escalated Dispatcher -->
         <set-backend-service base-url="{{esccommentlogicapp-baseUrl}}" />
         <rewrite-uri template="{{esccommentlogicapp-rewriteUrl}}" />

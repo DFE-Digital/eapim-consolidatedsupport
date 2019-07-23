@@ -180,6 +180,29 @@
         }
       }
     },
+    "/CloseIncident": {
+      "post": {
+        "summary": "Close Incident",
+        "description": "Closes an incident.",
+        "operationId": "close-incident",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Incident Data",
+            "description": "A JSON payload containing the incident data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/crm-data"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The incident was closed with success."
+          }
+        }
+      }
+    },
     "/incidents": {
       "post": {
         "summary": "Create Incident",

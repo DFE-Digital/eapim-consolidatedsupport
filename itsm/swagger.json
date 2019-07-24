@@ -5,7 +5,7 @@
     "version": "1.0",
     "description": "Provides access to ITSM related operations."
   },
-  "host": "dfetest.service-now.com",
+  "host": "sfadev.service-now.com",
   "schemes": [
     "https"
   ],

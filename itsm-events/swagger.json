@@ -42,15 +42,6 @@
             "type": "string",
             "required": true,
             "description": "The id of the incident that has closed."
-          },
-          {
-            "in": "body",
-            "name": "Event Data",
-            "description": "A JSON payload containing the event data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/itsm-event-data"
-            }
           }
         ],
         "responses": {

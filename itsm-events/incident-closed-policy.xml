@@ -1,19 +1,33 @@
 <policies>
-    <inbound>
-        <base />
-        <set-backend-service base-url="{{itsmincidentclosedlogicapp-baseUrl}}" />
-        <set-method>POST</set-method>
-        <rewrite-uri template="{{itsmincidentclosedlogicapp-rewriteUrl}}" />
-        <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
-        <set-header name="Authorization" exists-action="delete" />
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+  <inbound>
+    <base />
+    <set-backend-service base-url="{{itsmincidentclosedlogicapp-baseUrl}}" />
+    <set-method>POST</set-method>
+    <set-body>
+      @{
+        string toReturn = null;
+
+        string id = context.Request.MatchedParameters["id"];
+
+        toReturn = "{ \"id\": \"" + id + "\" }";
+
+        return toReturn;
+      }
+    </set-body>
+    <rewrite-uri template="{{itsmincidentclosedlogicapp-rewriteUrl}}" />
+    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+    <set-header name="Authorization" exists-action="delete" />
+    <set-header name="Content-Type" exists-action="override">
+      <value>application/json</value>
+    </set-header>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

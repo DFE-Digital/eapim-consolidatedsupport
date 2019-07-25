@@ -70,6 +70,35 @@
         }
       }
     },
+    "/tickets/{id}.json": {
+      "put": {
+        "summary": "Update Ticket",
+        "operationId": "update-ticket",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The id of the ticket in which to update."
+          },
+          {
+            "in": "body",
+            "name": "Ticket Data",
+            "description": "A JSON payload containing the ticket data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tags were deleted with success."
+          }
+        }
+      }
+    },
     "/tickets/{id}/tags.json": {
       "delete": {
         "summary": "Delete Ticket Tags",

@@ -8,8 +8,9 @@
         string toReturn = null;
 
         string id = context.Request.MatchedParameters["id"];
+        string incident_state = context.Request.MatchedParameters["incident_state"];
 
-        toReturn = "{ \"id\": \"" + id + "\" }";
+        toReturn = "{ \"id\": \"" + id + "\", \"incident_state\": \"" + incident_state + "\" }";
 
         return toReturn;
       }

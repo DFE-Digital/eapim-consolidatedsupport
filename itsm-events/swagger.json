@@ -42,6 +42,13 @@
             "type": "string",
             "required": true,
             "description": "The id of the incident that has closed."
+          },
+          {
+            "in": "query",
+            "name": "incident_state",
+            "type": "integer",
+            "required": true,
+            "description": "The state in which the incident was closed under."
           }
         ],
         "responses": {

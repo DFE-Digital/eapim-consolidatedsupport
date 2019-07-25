@@ -38,7 +38,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "Incident Id",
+            "name": "id",
             "type": "string",
             "required": true,
             "description": "The id of the incident that has closed."

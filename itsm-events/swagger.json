@@ -30,12 +30,19 @@
         }
       }
     },
-    "/incident": {
+    "/incident/{id}": {
       "delete": {
         "summary": "Incident Closed",
         "description": "Accepts event information for the ITSM event \"Incident Closed\".",
         "operationId": "incident-closed",
         "parameters": [
+          {
+            "in": "path",
+            "name": "Incident Id",
+            "type": "string",
+            "required": true,
+            "description": "The id of the incident that has closed."
+          },
           {
             "in": "body",
             "name": "Event Data",

@@ -1,31 +1,37 @@
 <policies>
-    <inbound>
-        <base />
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
+  <inbound>
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <choose>
+      <when condition="@(context.Response.StatusCode == 204)">
         <set-header name="Entity-Id" exists-action="override">
-            <value>@{
-                string[] headerValues = null;
-                
-                context.Response.Headers.TryGetValue("odata-entityid", out headerValues);
+          <value>
+            @{
+              string[] headerValues = null;
 
-                string entityId = headerValues[0];
+              context.Response.Headers.TryGetValue("odata-entityid", out headerValues);
 
-                string[] entityIdParts = entityId.Split('(');
+              string entityId = headerValues[0];
 
-                entityIdParts = entityIdParts[1].Split(')');
+              string[] entityIdParts = entityId.Split('(');
 
-                entityId = entityIdParts[0];
+              entityIdParts = entityIdParts[1].Split(')');
 
-                return entityId;
-            }</value>
+              entityId = entityIdParts[0];
+
+              return entityId;
+            }
+          </value>
         </set-header>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+      </when>
+    </choose>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

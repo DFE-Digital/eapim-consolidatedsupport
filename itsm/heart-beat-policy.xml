@@ -1,16 +1,16 @@
 <policies>
-    <inbound>
-        <base />
-        <rewrite-uri template="/sys_user/288000fbdb117300865049ee3b961928" />
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-        <set-body />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+  <inbound>
+    <base />
+    <rewrite-uri template="/sys_user/288000fbdb117300865049ee3b961928" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-body />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

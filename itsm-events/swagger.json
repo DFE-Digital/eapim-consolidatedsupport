@@ -7,6 +7,29 @@
   },
   "basePath": "/v1/itsm-events",
   "paths": {
+    "/attachment": {
+      "put": {
+        "summary": "Attachment Created",
+        "description": "Accepts information for the ITSM event \"Attachment Created\".",
+        "operationId": "attachment-created",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Attachment Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
     "/comment": {
       "post": {
         "summary": "Comment Created",

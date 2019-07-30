@@ -128,6 +128,39 @@
         }
       }
     },
+    "/uploads.json": {
+      "post": {
+        "summary": "Upload File",
+        "description": "Uploads a file.",
+        "operationId": "upload-file",
+        "consumes": [
+          "data/binary"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filename",
+            "description": "The destination filename.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "File Data",
+            "in": "body",
+            "description": "The file content.",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The file was uploaded with success."
+          }
+        }
+      }
+    },
     "/users.json": {
       "post": {
         "summary": "Create User",

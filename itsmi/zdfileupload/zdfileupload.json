@@ -1,0 +1,472 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "LogicAppName": {
+      "defaultValue": "s113d01-zdfileupload-la-17",
+      "type": "String"
+    },
+    "MiddlewareEnvironmentPrefix": {
+      "defaultValue": "s113d01",
+      "type": "String"
+    },
+    "DataServicesKeyName": {
+      "defaultValue": "c106d01-apim-custeng-dataservicessubscriptionkey",
+      "type": "String"
+    },
+    "HelpdeskKeyName": {
+      "defaultValue": "c106d01-apim-custeng-helpdeskapisubscriptionkey",
+      "type": "String"
+    },
+    "OrchestratorApiTokenRequestPayloadName": {
+      "defaultValue": "s113d01-la-05-orchestratorapitokenrequestpayload",
+      "type": "String"
+    },
+    "ApimBaseUrl": {
+      "defaultValue": "https://dev-api-customerengagement.platform.education.gov.uk/",
+      "type": "String"
+    }
+  },
+  "variables": {
+    "OAuthTokenEndpoint": "https://login.microsoftonline.com/9c7d9dd3-840c-4b3f-818e-552865082e16/oauth2/token",
+    "KeyVaultUrlBase": "[concat('https://', parameters('MiddlewareEnvironmentPrefix'), '-kv-01.vault.azure.net/secrets/')]",
+    "KeyVaultUrlSuffix": "?api-version=2016-10-01",
+    "DataServicesKeyUrl": "[concat(variables('KeyVaultUrlBase'), parameters('DataServicesKeyName'), variables('KeyVaultUrlSuffix'))]",
+    "HelpdeskKeyUrl": "[concat(variables('KeyVaultUrlBase'), parameters('HelpdeskKeyName'), variables('KeyVaultUrlSuffix'))]",
+    "OrchestratorApiTokenRequestPayloadUrl": "[concat(variables('KeyVaultUrlBase'), parameters('OrchestratorApiTokenRequestPayloadName'), variables('KeyVaultUrlSuffix'))]",
+    "ProcessEventInformationUrl": "[concat(parameters('ApimBaseUrl'), 'v1/orchestrator/process-event-information')]",
+    "UploadAttachmentUrl": "[concat(parameters('ApimBaseUrl'), 'v1/helpdesk/uploads.json?filename=')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppName')]",
+      "location": "westeurope",
+      "tags": {
+        "Environment": "Dev",
+        "Parent Business": "TBC",
+        "Service Offering": "TBC"
+      },
+      "identity": {
+        "principalId": "884f4e48-6ec8-4dc0-9c6c-829b53c747a6",
+        "tenantId": "9c7d9dd3-840c-4b3f-818e-552865082e16",
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "manual": {
+              "type": "Request",
+              "kind": "Http",
+              "inputs": {
+                "schema": {
+                  "properties": {
+                    "attachment_data": {
+                      "type": "string"
+                    },
+                    "attachment_filename": {
+                      "type": "string"
+                    },
+                    "incident_sys_id": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "actions": {
+            "Get_Orchestrator_OAuth_Token": {
+              "runAfter": {
+                "Parse_la-05-orchestratorapitokenrequestpayload": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": "@body('Parse_la-05-orchestratorapitokenrequestpayload')?['value']",
+                "headers": {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                "method": "POST",
+                "uri": "[variables('OAuthTokenEndpoint')]"
+              }
+            },
+            "Get_apim-custeng-dataservicessubscriptionkey_from_KeyVault": {
+              "runAfter": {
+                "Parse_Orchestrator_OAuth_Token": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "authentication": {
+                  "audience": "https://vault.azure.net",
+                  "type": "ManagedServiceIdentity"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "GET",
+                "uri": "[variables('DataServicesKeyUrl')]"
+              }
+            },
+            "Get_apim-custeng-helpdeskapisubscriptionkey_from_KeyVault": {
+              "runAfter": {},
+              "type": "Http",
+              "inputs": {
+                "authentication": {
+                  "audience": "https://vault.azure.net",
+                  "type": "ManagedServiceIdentity"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "GET",
+                "uri": "[variables('HelpdeskKeyUrl')]"
+              }
+            },
+            "Get_la-05-orchestratorapitokenrequestpayload_from_KeyVault": {
+              "runAfter": {
+                "Parse_Upload_Result": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "authentication": {
+                  "audience": "https://vault.azure.net",
+                  "type": "ManagedServiceIdentity"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "method": "GET",
+                "uri": "[variables('OrchestratorApiTokenRequestPayloadUrl')]"
+              }
+            },
+            "Parse_Orchestrator_OAuth_Token": {
+              "runAfter": {
+                "Get_Orchestrator_OAuth_Token": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_Orchestrator_OAuth_Token')",
+                "schema": {
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "string"
+                    },
+                    "expires_on": {
+                      "type": "string"
+                    },
+                    "ext_expires_in": {
+                      "type": "string"
+                    },
+                    "not_before": {
+                      "type": "string"
+                    },
+                    "resource": {
+                      "type": "string"
+                    },
+                    "token_type": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_Upload_Result": {
+              "runAfter": {
+                "Upload_file_to_Zendesk": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Upload_file_to_Zendesk')",
+                "schema": {
+                  "properties": {
+                    "upload": {
+                      "properties": {
+                        "attachment": {
+                          "properties": {
+                            "content_type": {
+                              "type": "string"
+                            },
+                            "content_url": {
+                              "type": "string"
+                            },
+                            "file_name": {
+                              "type": "string"
+                            },
+                            "height": {},
+                            "id": {
+                              "type": "integer"
+                            },
+                            "inline": {
+                              "type": "boolean"
+                            },
+                            "mapped_content_url": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "integer"
+                            },
+                            "thumbnails": {
+                              "type": "array"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "width": {}
+                          },
+                          "type": "object"
+                        },
+                        "attachments": {
+                          "items": {
+                            "properties": {
+                              "content_type": {
+                                "type": "string"
+                              },
+                              "content_url": {
+                                "type": "string"
+                              },
+                              "file_name": {
+                                "type": "string"
+                              },
+                              "height": {},
+                              "id": {
+                                "type": "integer"
+                              },
+                              "inline": {
+                                "type": "boolean"
+                              },
+                              "mapped_content_url": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "integer"
+                              },
+                              "thumbnails": {
+                                "type": "array"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "width": {}
+                            },
+                            "required": [
+                              "url",
+                              "id",
+                              "file_name",
+                              "content_url",
+                              "mapped_content_url",
+                              "content_type",
+                              "size",
+                              "width",
+                              "height",
+                              "inline",
+                              "thumbnails"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "expires_at": {
+                          "type": "string"
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_apim-custeng-dataservicessubscriptionkey": {
+              "runAfter": {
+                "Get_apim-custeng-dataservicessubscriptionkey_from_KeyVault": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_apim-custeng-dataservicessubscriptionkey_from_KeyVault')",
+                "schema": {
+                  "properties": {
+                    "attributes": {
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "recoveryLevel": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_apim-custeng-helpdeskapisubscriptionkey": {
+              "runAfter": {
+                "Get_apim-custeng-helpdeskapisubscriptionkey_from_KeyVault": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_apim-custeng-helpdeskapisubscriptionkey_from_KeyVault')",
+                "schema": {
+                  "properties": {
+                    "attributes": {
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "recoveryLevel": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Parse_la-05-orchestratorapitokenrequestpayload": {
+              "runAfter": {
+                "Get_la-05-orchestratorapitokenrequestpayload_from_KeyVault": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_la-05-orchestratorapitokenrequestpayload_from_KeyVault')",
+                "schema": {
+                  "properties": {
+                    "attributes": {
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "recoveryLevel": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "Trigger_the_itsm-comment-created_event_synchronously": {
+              "runAfter": {
+                "Parse_apim-custeng-dataservicessubscriptionkey": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": {
+                  "eventIdentifier": {
+                    "eventDescription": "created",
+                    "systemEntity": "comment",
+                    "systemName": "itsm"
+                  },
+                  "eventInformation": {
+                    "attachment_token": "@{body('Parse_Upload_Result')?['upload']?['token']}",
+                    "element_id": "@{triggerBody()?['incident_sys_id']}",
+                    "value": "An attachment was created against the corresponding ServiceNow incident, filename: \"@{triggerBody()?['attachment_filename']}\"."
+                  }
+                },
+                "headers": {
+                  "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                },
+                "method": "POST",
+                "uri": "[variables('ProcessEventInformationUrl')]"
+              }
+            },
+            "Upload_file_to_Zendesk": {
+              "runAfter": {
+                "Parse_apim-custeng-helpdeskapisubscriptionkey": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": "@base64toBinary(triggerBody()?['attachment_data'])",
+                "headers": {
+                  "Content-Type": "data/binary",
+                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-helpdeskapisubscriptionkey')?['value']"
+                },
+                "method": "POST",
+                "uri": "[concat(variables('UploadAttachmentUrl'), '@{triggerBody()?[''attachment_filename'']}')]"
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    }
+  ]
+}

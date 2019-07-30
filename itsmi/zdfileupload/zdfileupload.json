@@ -461,6 +461,18 @@
                 "method": "POST",
                 "uri": "[concat(variables('UploadAttachmentUrl'), '@{triggerBody()?[''attachment_filename'']}')]"
               }
+            },
+            "OK_Response": {
+              "runAfter": {
+                "Trigger_the_itsm-comment-created_event_synchronously": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200
+              }
             }
           },
           "outputs": {}

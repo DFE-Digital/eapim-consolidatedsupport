@@ -51,52 +51,6 @@
         }
       }
     },
-    "/account-created": {
-      "post": {
-        "summary": "Account Created (Legacy)",
-        "description": "Accepts event information for the CRM event \"Account Created\".",
-        "operationId": "account-created-legacy",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Event Data",
-            "description": "A JSON payload containing the event data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/crm-event-data"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
-          }
-        }
-      }
-    },
-    "/account-updated": {
-      "post": {
-        "summary": "Account Updated (Legacy)",
-        "description": "Accepts event information for the CRM event \"Account Updated\".",
-        "operationId": "account-updated-legacy",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Event Data",
-            "description": "A JSON payload containing the event data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/crm-event-data"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
-          }
-        }
-      }
-    },
     "/contact": {
       "post": {
         "summary": "Contact Created",
@@ -123,52 +77,6 @@
         "summary": "Contact Updated",
         "description": "Accepts event information for the CRM event \"Contact Updated\".",
         "operationId": "contact-updated",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Event Data",
-            "description": "A JSON payload containing the event data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/crm-event-data"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
-          }
-        }
-      }
-    },
-    "/contact-created": {
-      "post": {
-        "summary": "Contact Created (Legacy)",
-        "description": "Accepts event information for the CRM event \"Contact Created\".",
-        "operationId": "contact-created-legacy",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Event Data",
-            "description": "A JSON payload containing the event data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/crm-event-data"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
-          }
-        }
-      }
-    },
-    "/contact-updated": {
-      "post": {
-        "summary": "Contact Updated (Legacy)",
-        "description": "Accepts event information for the CRM event \"Contact Updated\".",
-        "operationId": "contact-updated-legacy",
         "parameters": [
           {
             "in": "body",

@@ -14,6 +14,12 @@
         "operationId": "process-ticket-event-information",
         "parameters": [
           {
+            "in": "query",
+            "name": "escalated",
+            "description": "Set to true if the ticket should be escalated to the ITSM system.",
+            "type": "boolean"
+          },
+          {
             "in": "body",
             "name": "Event Data",
             "description": "A JSON payload containing the event data.",

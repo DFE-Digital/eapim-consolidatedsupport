@@ -9,9 +9,17 @@
         </claim>
       </required-claims>
     </validate-jwt>
-    <set-backend-service base-url="{{pteilogicapp-baseUrl}}" />
+    <choose>
+      <when condition="@(context.Request.OriginalUrl.Query.GetValueOrDefault(&quot;escalated&quot;) == &quot;true&quot;)">
+        <set-backend-service base-url="{{escalate-baseUrl}}" />
+        <rewrite-uri template="{{escalate-rewriteUrl}}" />
+      </when>
+      <otherwise>
+        <set-backend-service base-url="{{pteilogicapp-baseUrl}}" />
+        <rewrite-uri template="{{pteilogicapp-rewriteUrl}}" />
+      </otherwise>
+    </choose>
     <set-method>POST</set-method>
-    <rewrite-uri template="{{pteilogicapp-rewriteUrl}}" />
     <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
     <set-header name="Authorization" exists-action="delete" />
   </inbound>

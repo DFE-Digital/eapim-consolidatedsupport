@@ -7,6 +7,7 @@
   </backend>
   <outbound>
     <choose>
+      
       <when condition="@(context.Response.StatusCode == 201)">
         <set-header name="Entity-Id" exists-action="override">
           <value>
@@ -22,6 +23,27 @@
           </value>
         </set-header>
       </when>
+      
+      <!-- 'Fake' a comment ID, when updating, so we can keep track of Zendesk comments. -->
+      <when condition="@(context.Response.StatusCode == 200)">
+        <set-header name="Entity-Id" exists-action="override">
+          <value>
+            @{
+              string toReturn = null;
+
+              JObject parsedBodyContent = context.Response.Body.As&lt;JObject&gt;();
+
+              string sysId = (string)parsedBodyContent[&quot;result&quot;][&quot;sys_id&quot;];
+              string timestamp = DateTime.UtcNow.ToString(&quot;yyyyMMddHHmmss&quot;);
+
+              toReturn = $&quot;comment_{sysId}_{timestamp}&quot;;
+
+              return toReturn;
+            }
+          </value>
+        </set-header>
+      </when>
+      
     </choose>
     <base />
   </outbound>

@@ -70,6 +70,42 @@
         }
       }
     },
+    "/incident/{id}/comment": {
+      "post": {
+        "summary": "Create Comment",
+        "description": "Creates a comment, against an incident.",
+        "operationId": "create-comment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the incident to update."
+          },
+          {
+            "in": "body",
+            "name": "Incident Data",
+            "description": "A JSON payload containing the incident data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The incident was updated with success.",
+            "headers": {
+              "Entity-Id": {
+                "type": "string",
+                "description": "The ID of the created comment."
+              }
+            }
+          }
+        }
+      }
+    },
     "/heart-beat": {
       "get": {
         "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",

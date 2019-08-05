@@ -1,0 +1,33 @@
+<policies>
+  <inbound>
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <choose>
+      
+      <when condition="@(context.Response.StatusCode == 201)">
+        <set-header name="Entity-Id" exists-action="override">
+          <value>
+            @{
+              string toReturn = null;
+
+              JObject parsedBodyContent = context.Response.Body.As&lt;JObject&gt;();
+
+              toReturn = (string)parsedBodyContent[&quot;result&quot;][&quot;sys_id&quot;];
+
+              return toReturn;
+            }
+          </value>
+        </set-header>
+      </when>
+      
+    </choose>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

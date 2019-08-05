@@ -99,6 +99,35 @@
         }
       }
     },
+    "/tickets/{id}/comments.json": {
+      "post": {
+        "summary": "Create Comment",
+        "operationId": "create-comment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "The id of the ticket in which to create a comment against."
+          },
+          {
+            "in": "body",
+            "name": "Comment Data",
+            "description": "A JSON payload containing the ticket data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helpdesk-data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comment was created with success."
+          }
+        }
+      }
+    },
     "/tickets/{id}/tags.json": {
       "delete": {
         "summary": "Delete Ticket Tags",

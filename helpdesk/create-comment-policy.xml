@@ -1,0 +1,40 @@
+<policies>
+  <inbound>
+    <set-method>PUT</set-method>
+
+    <!-- We're just updating, really, under the hood. -->
+    <rewrite-uri template="/tickets/{id}.json" />
+
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <choose>
+      <when condition="@(context.Response.StatusCode == 200)">
+        <set-header name="Entity-Id" exists-action="override">
+          <value>
+            @{
+              string toReturn = null;
+
+              JObject parsedBodyContent = context.Response.Body.As&amp;lt;JObject&amp;gt;();
+
+              JToken auditEvents = (JToken)parsedBodyContent[&quot;audit&quot;][&quot;events&quot;];
+
+              JToken commentCreated = auditEvents.Single(x =&gt; x[&quot;type&quot;].ToString() == &quot;Comment&quot;);
+
+              toReturn = commentCreated[&quot;id&quot;].ToString();
+
+              return toReturn;
+            }
+          </value>
+        </set-header>
+      </when>
+    </choose>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

@@ -17,7 +17,7 @@
 
               JToken root = (JToken)parsedBodyContent.First.First;
 
-              toReturn = (string)root["id"];
+              toReturn = (string)root[&quot;id&quot;];
 
               return toReturn;
             }

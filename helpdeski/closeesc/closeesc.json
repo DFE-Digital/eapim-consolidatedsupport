@@ -41,7 +41,7 @@
     {
       "type": "Microsoft.Logic/workflows",
       "apiVersion": "2017-07-01",
-      "name": "[parameters('workflows_s113d01_closeesc_la_19_name')]",
+      "name": "[parameters('LogicAppName')]",
       "location": "westeurope",
       "tags": {
         "Environment": "Dev",

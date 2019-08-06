@@ -1,0 +1,27 @@
+<policies>
+  <inbound>
+    <base />
+    <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+      <openid-config url="{{eapim-oauth-url}}" />
+      <required-claims>
+        <claim name="aud">
+          <value>{{helpdeski-aud-claim}}</value>
+        </claim>
+      </required-claims>
+    </validate-jwt>
+    <set-backend-service base-url="{{closeesc-baseUrl}}" />
+    <rewrite-uri template="{{closeesc-rewriteUrl}}" />
+    <set-method>POST</set-method>
+    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+    <set-header name="Authorization" exists-action="delete" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

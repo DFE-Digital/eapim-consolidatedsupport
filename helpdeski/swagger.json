@@ -37,6 +37,30 @@
             "description": "An unexpected error has occurred - please get in touch with us so we can check our logs!"
           }
         }
+      },
+      "delete": {
+        "summary": "Process Ticket Closure",
+        "description": "Accepts helpdesk ticket created/updated event information, checks if an incident exists in ITSM. If the ITSM incident exists, then the Helpdesk Escalation Closed event is invoked synchronously.",
+        "operationId": "process-ticket-closure",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ticket-event-information"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The event data was processed with success."
+          },
+          "500": {
+            "description": "An unexpected error has occurred - please get in touch with us so we can check our logs!"
+          }
+        }
       }
     },
     "/heart-beat": {

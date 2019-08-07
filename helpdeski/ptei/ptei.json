@@ -341,37 +341,43 @@
                       },
                       "else": {
                         "actions": {
-                          "For_Each_Attachment": {
-                            "foreach": "@items('For_Each_Comment')?['attachments']",
+                          "Check_attachments_are_present": {
                             "actions": {
-                              "Trigger_the_helpdesk-attachment-created_event_synchronously": {
-                                "runAfter": {},
-                                "type": "Http",
-                                "inputs": {
-                                  "body": {
-                                    "eventIdentifier": {
-                                      "eventDescription": "created",
-                                      "systemEntity": "attachment",
-                                      "systemName": "helpdesk"
-                                    },
-                                    "eventInformation": {
-                                      "ticket": {
-                                        "attachment": {
-                                          "filename": "@{items('For_Each_Attachment')?['filename']}",
-                                          "url": "@{items('For_Each_Attachment')?['url']}"
+                              "For_Each_Attachment": {
+                                "foreach": "@items('For_Each_Comment')?['attachments']",
+                                "actions": {
+                                  "Trigger_the_helpdesk-attachment-created_event_synchronously": {
+                                    "runAfter": {},
+                                    "type": "Http",
+                                    "inputs": {
+                                      "body": {
+                                        "eventIdentifier": {
+                                          "eventDescription": "created",
+                                          "systemEntity": "attachment",
+                                          "systemName": "helpdesk"
                                         },
-                                        "id": "@{triggerBody()?['ticket']?['id']}"
-                                      }
+                                        "eventInformation": {
+                                          "ticket": {
+                                            "attachment": {
+                                              "filename": "@{items('For_Each_Attachment')?['filename']}",
+                                              "url": "@{items('For_Each_Attachment')?['url']}"
+                                            },
+                                            "id": "@{triggerBody()?['ticket']?['id']}"
+                                          }
+                                        }
+                                      },
+                                      "headers": {
+                                        "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                                        "Content-Type": "application/json",
+                                        "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                                      },
+                                      "method": "POST",
+                                      "uri": "[variables('ProcessEventInformationUrl')]"
                                     }
-                                  },
-                                  "headers": {
-                                    "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
-                                    "Content-Type": "application/json",
-                                    "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
-                                  },
-                                  "method": "POST",
-                                  "uri": "[variables('ProcessEventInformationUrl')]"
-                                }
+                                  }
+                                },
+                                "runAfter": {},
+                                "type": "Foreach"
                               }
                             },
                             "runAfter": {
@@ -379,7 +385,17 @@
                                 "Succeeded"
                               ]
                             },
-                            "type": "Foreach"
+                            "expression": {
+                              "and": [
+                                {
+                                  "equals": [
+                                    "@empty(items('For_Each_Comment')?['attachments'])",
+                                    false
+                                  ]
+                                }
+                              ]
+                            },
+                            "type": "If"
                           },
                           "Trigger_the_helpdesk-comment-created_event_synchronously": {
                             "runAfter": {},
@@ -500,6 +516,12 @@
                     "greater": [
                       "@length(body('Parse_Rosetta_Stone_Results_(TIC-SNOW)'))",
                       0
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@empty(triggerBody()?['ticket']?['comments'])",
+                      false
                     ]
                   }
                 ]

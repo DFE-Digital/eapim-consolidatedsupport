@@ -12,7 +12,7 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>application/Json</value>
             </set-header>
-            <set-body>@{ return context.Request.Body.As&lt;string&gt;();</set-body>
+            <set-body>@{ return context.Request.Body.As&lt;string&gt;();}</set-body>
         </send-one-way-request>        
     </inbound>
     <backend>

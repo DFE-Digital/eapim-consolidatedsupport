@@ -222,6 +222,9 @@
                       "Content-Type": "application/x-www-form-urlencoded"
                     },
                     "method": "POST",
+                    "retryPolicy": {
+                      "type": "none"
+                    },
                     "uri": "[variables('OAuthTokenEndpoint')]"
                   }
                 },
@@ -237,6 +240,9 @@
                       "Content-Type": "application/json"
                     },
                     "method": "GET",
+                    "retryPolicy": {
+                      "type": "none"
+                    },
                     "uri": "[variables('OrchestratorApiTokenRequestPayloadUrl')]"
                   }
                 },
@@ -338,6 +344,9 @@
                       "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
                     },
                     "method": "POST",
+                    "retryPolicy": {
+                      "type": "none"
+                    },
                     "uri": "[variables('ProcessEventInformationUrl')]"
                   }
                 }
@@ -372,6 +381,9 @@
                   "Content-Type": "application/x-www-form-urlencoded"
                 },
                 "method": "POST",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('OAuthTokenEndpoint')]"
               }
             },
@@ -391,6 +403,9 @@
                   "Content-Type": "application/json"
                 },
                 "method": "GET",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('DataServicesKeyUrl')]"
               }
             },
@@ -406,6 +421,9 @@
                   "Content-Type": "application/json"
                 },
                 "method": "GET",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('RosettaStoneApiTokenPayloadUrl')]"
               }
             },
@@ -597,6 +615,9 @@
                   "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
                 },
                 "method": "POST",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
               }
             }

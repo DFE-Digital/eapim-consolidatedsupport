@@ -95,6 +95,9 @@
                   "Content-Type": "application/x-www-form-urlencoded"
                 },
                 "method": "POST",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('OAuthTokenEndpoint')]"
               }
             },
@@ -114,6 +117,9 @@
                   "Content-Type": "application/json"
                 },
                 "method": "GET",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('DataServicesKeyUrl')]"
               }
             },
@@ -129,6 +135,9 @@
                   "Content-Type": "application/json"
                 },
                 "method": "GET",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('HelpdeskKeyUrl')]"
               }
             },
@@ -148,6 +157,9 @@
                   "Content-Type": "application/json"
                 },
                 "method": "GET",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('OrchestratorApiTokenRequestPayloadUrl')]"
               }
             },
@@ -442,6 +454,9 @@
                   "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
                 },
                 "method": "POST",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('ProcessEventInformationUrl')]"
               }
             },
@@ -459,6 +474,9 @@
                   "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-helpdeskapisubscriptionkey')?['value']"
                 },
                 "method": "POST",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[concat(variables('UploadAttachmentUrl'), '@{triggerBody()?[''attachment_filename'']}')]"
               }
             },

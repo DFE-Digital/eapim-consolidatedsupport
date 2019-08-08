@@ -1,27 +1,27 @@
 <policies>
-  <inbound>
-    <base />
-    <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
-      <openid-config url="{{eapim-oauth-url}}" />
-      <required-claims>
-        <claim name="aud">
-          <value>{{crm-events-aud-claim}}</value>
-        </claim>
-      </required-claims>
-    </validate-jwt>
-    <set-backend-service base-url="{{createcontactlogicapp-baseUrl}}" />
-    <set-method>POST</set-method>
-    <rewrite-uri template="{{createcontactlogicapp-rewriteUrl}}" />
-    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
-    <set-header name="Authorization" exists-action="delete" />
-  </inbound>
-  <backend>
-    <base />
-  </backend>
-  <outbound>
-    <base />
-  </outbound>
-  <on-error>
-    <base />
-  </on-error>
+    <inbound>
+        <base />
+        <set-backend-service base-url="{{createcontactlogicapp-baseUrl}}" />
+        <set-method>POST</set-method>
+        <rewrite-uri template="{{createcontactlogicapp-rewriteUrl}}" />
+        <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+        <set-header name="Authorization" exists-action="delete" />
+        <send-one-way-request mode="new">
+            <set-url>{{tlevel-contact-created-handler-url}}</set-url>
+            <set-method>POST</set-method>
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/Json</value>
+            </set-header>
+            <set-body>@{ return context.Request.Body.As&lt;string&gt;();}</set-body>
+        </send-one-way-request>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
 </policies>

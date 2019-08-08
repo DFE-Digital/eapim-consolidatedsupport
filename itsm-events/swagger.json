@@ -53,6 +53,29 @@
         }
       }
     },
+    "/incident": {
+      "post": {
+        "summary": "Incident Created",
+        "description": "Accepts event information for the ITSM event \"Incident Created\".",
+        "operationId": "incident-created",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
+      }
+    },
     "/incident/{id}": {
       "delete": {
         "summary": "Incident Closed",

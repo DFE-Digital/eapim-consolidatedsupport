@@ -1,6 +1,5 @@
 <policies>
   <inbound>
-    <return-response />
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
       <openid-config url="{{eapim-oauth-url}}" />
       <required-claims>
@@ -8,6 +7,7 @@
           <value>{{itsmi-aud-claim}}</value>
         </claim>
       </required-claims>
+      <return-response />
     </validate-jwt>
     <base />
   </inbound>

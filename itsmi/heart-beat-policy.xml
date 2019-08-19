@@ -7,8 +7,8 @@
           <value>{{itsmi-aud-claim}}</value>
         </claim>
       </required-claims>
-      <return-response />
     </validate-jwt>
+    <return-response />
     <base />
   </inbound>
   <backend>

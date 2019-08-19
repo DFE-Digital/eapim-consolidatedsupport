@@ -10,8 +10,8 @@
     "/ticket": {
       "put": {
         "summary": "Ticket Escalated",
-        "description": "Accepts event information for the helpdesk event \"Ticket Updated\".",
-        "operationId": "ticket-updated",
+        "description": "Accepts event information for the helpdesk event \"Ticket Escalated\".",
+        "operationId": "ticket-escalated",
         "parameters": [
           {
             "in": "header",

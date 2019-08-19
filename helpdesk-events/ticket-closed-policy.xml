@@ -3,18 +3,8 @@
     <check-header name="Authorization" failed-check-httpcode="401" ignore-case="false">
       <value>{{helpdesk-events-basic-auth-digest}}</value>
     </check-header>
-    <choose>
-      <when condition="@(context.Request.OriginalUrl.Query.GetValueOrDefault(&quot;escalated&quot;) == &quot;true&quot;)">
-        <!-- Send to Escalated Dispatcher -->
-        <set-backend-service base-url="{{ticketescclosedlogicapp-baseUrl}}" />
-        <rewrite-uri template="{{ticketescclosedlogicapp-rewriteUrl}}" />
-      </when>
-      <otherwise>
-        <!-- Send to regular Ticket Closed Dispatcher -->
-        <set-backend-service base-url="{{ticketclosedlogicapp-baseUrl}}" />
-        <rewrite-uri template="{{ticketclosedlogicapp-rewriteUrl}}" />
-      </otherwise>
-    </choose>
+    <set-backend-service base-url="{{ticketclosedlogicapp-baseUrl}}" />
+    <rewrite-uri template="{{ticketclosedlogicapp-rewriteUrl}}" />
     <set-method>POST</set-method>
     <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
     <set-header name="Authorization" exists-action="delete" />

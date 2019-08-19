@@ -7,79 +7,9 @@
   },
   "basePath": "/v1/helpdesk-events",
   "paths": {
-    "/comment": {
-      "post": {
-        "summary": "Comment Created",
-        "description": "Accepts event information for the helpdesk event \"Comment Created\".",
-        "operationId": "comment-created",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "description": "The event endpoint's basic authentication credentials.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "escalated",
-            "description": "Set to true if the ticket was created and immediately escalated. Set to false, or omit this parameter to indicate that the ticket was created, but not escalated.",
-            "type": "boolean"
-          },
-          {
-            "in": "body",
-            "name": "Ticket Data",
-            "description": "A JSON payload containing the ticket data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/helpdesk-event-data"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
-          }
-        }
-      }
-    },
     "/ticket": {
-      "post": {
-        "summary": "Ticket Created",
-        "description": "Accepts event information for the helpdesk event \"Ticket Created\".",
-        "operationId": "ticket-created",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "description": "The event endpoint's basic authentication credentials.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "escalated",
-            "description": "Set to true if the ticket was created and immediately escalated. Set to false, or omit this parameter to indicate that the ticket was created, but not escalated.",
-            "type": "boolean"
-          },
-          {
-            "in": "body",
-            "name": "Ticket Data",
-            "description": "A JSON payload containing the ticket data.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/helpdesk-event-data"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The event data was accepted for processing."
-          }
-        }
-      },
       "put": {
-        "summary": "Ticket Updated",
+        "summary": "Ticket Escalated",
         "description": "Accepts event information for the helpdesk event \"Ticket Updated\".",
         "operationId": "ticket-updated",
         "parameters": [
@@ -89,12 +19,6 @@
             "description": "The event endpoint's basic authentication credentials.",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "escalated",
-            "description": "Set to true if the ticket was updated and also escalated. Set to false, or omit this parameter to indicate that the ticket was updated, but not escalated.",
-            "type": "boolean"
           },
           {
             "in": "body",
@@ -123,12 +47,6 @@
             "description": "The event endpoint's basic authentication credentials.",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "escalated",
-            "description": "Set to true if the ticket was escalated and immediately closed. Set to false, or omit this parameter to indicate that the ticket was not escalated, and then closed.",
-            "type": "boolean"
           },
           {
             "in": "body",

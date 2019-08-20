@@ -1,5 +1,8 @@
 <policies>
   <inbound>
+    <check-header name="Authorization" failed-check-httpcode="401" ignore-case="false">
+      <value>{{itsm-events-basic-auth-digest}}</value>
+    </check-header>
     <base />
     <set-backend-service base-url="{{itsmincidentclosedlogicapp-baseUrl}}" />
     <set-method>POST</set-method>

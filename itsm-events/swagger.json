@@ -14,6 +14,13 @@
         "operationId": "attachment-created",
         "parameters": [
           {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "Attachment Data",
             "description": "A JSON payload containing the event data.",
@@ -36,6 +43,13 @@
         "description": "Accepts event information for the ITSM event \"Comment Created\".",
         "operationId": "comment-created",
         "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
           {
             "in": "body",
             "name": "Event Data",
@@ -60,6 +74,13 @@
         "operationId": "incident-created",
         "parameters": [
           {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "Event Data",
             "description": "A JSON payload containing the event data.",
@@ -82,6 +103,13 @@
         "description": "Accepts event information for the ITSM event \"Incident Closed\".",
         "operationId": "incident-closed",
         "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
           {
             "in": "path",
             "name": "id",
@@ -108,7 +136,15 @@
       "get": {
         "description": "Standard diagnostics method, used to test the health of the facade's underlying system.",
         "operationId": "heart-beat",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "The standard/only response from the method."

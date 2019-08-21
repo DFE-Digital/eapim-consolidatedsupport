@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "LogicAppName": {
+      "value": "s113t02-zdfileupload-la-17"
+    },
+    "MiddlewareEnvironmentPrefix": {
+      "value": "s113t02"
+    },
+    "DataServicesKeyName": {
+      "value": "c106t02-apim-custeng-dataservicessubscriptionkey"
+    },
+    "HelpdeskKeyName": {
+      "value": "c106t02-apim-custeng-helpdeskapisubscriptionkey"
+    },
+    "OrchestratorApiTokenRequestPayloadName": {
+      "value": "s113t02-la-05-orchestratorapitokenrequestpayload"
+    },
+    "ApimBaseUrl": {
+      "value": "https://oat-api-customerengagement.platform.education.gov.uk/"
+    }
+  }
+}

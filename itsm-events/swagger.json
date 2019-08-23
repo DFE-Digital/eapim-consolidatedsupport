@@ -95,6 +95,34 @@
             "description": "The event data was accepted for processing."
           }
         }
+      },
+      "put": {
+        "summary": "Incident Put On Hold",
+        "description": "Accepts event information for the ITSM event \"Incident Put On Hold\".",
+        "operationId": "incident-putonhold",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "The event endpoint's basic authentication credentials.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Event Data",
+            "description": "A JSON payload containing the event data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/itsm-event-data"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The event data was accepted for processing."
+          }
+        }
       }
     },
     "/incident/{id}": {

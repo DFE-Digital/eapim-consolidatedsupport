@@ -1,0 +1,22 @@
+<policies>
+  <inbound>
+    <check-header name="Authorization" failed-check-httpcode="401" ignore-case="false">
+      <value>{{itsm-events-basic-auth-digest}}</value>
+    </check-header>
+    <base />
+    <set-backend-service base-url="{{itsmincidentputonholdlogicapp-baseUrl}}" />
+    <set-method>POST</set-method>
+    <rewrite-uri template="{{itsmincidentputonholdlogicapp-rewriteUrl}}" />
+    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+    <set-header name="Authorization" exists-action="delete" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

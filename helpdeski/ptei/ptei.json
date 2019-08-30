@@ -49,8 +49,8 @@
         "Service Offering": "TBC"
       },
       "identity": {
-        "principalId": null,
-        "tenantId": null,
+        "principalId": "8404a4e1-e161-4b98-9132-586e88c16aa1",
+        "tenantId": "9c7d9dd3-840c-4b3f-818e-552865082e16",
         "type": "SystemAssigned"
       },
       "properties": {
@@ -247,6 +247,157 @@
               },
               "type": "If"
             },
+            "Check_results_are_more_than_zero_(CNT)_(Again)": {
+              "actions": {
+                "Check_results_are_more_than_zero_(TIC)": {
+                  "actions": {
+                    "Set_eventDescription_=_\"updated\"_(3)": {
+                      "runAfter": {},
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "eventDescription",
+                        "value": "updated"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Parse_Rosetta_Stone_Results_(TIC)": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Set_eventDescription_=_\"created\"_(3)": {
+                        "runAfter": {},
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "eventDescription",
+                          "value": "created"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "and": [
+                      {
+                        "greater": [
+                          "@length(body('Parse_Rosetta_Stone_Results_(TIC)'))",
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Parse_Rosetta_Stone_Results_(TIC)": {
+                  "runAfter": {
+                    "Quiz_Rosetta_Stone_for_Ticket_ID": [
+                      "Succeeded"
+                    ]
+                  },
+                  "type": "ParseJson",
+                  "inputs": {
+                    "content": "@body('Quiz_Rosetta_Stone_for_Ticket_ID')",
+                    "schema": {
+                      "items": {
+                        "properties": {
+                          "SourceEntityBK": {
+                            "type": "string"
+                          },
+                          "SourceSorBK": {
+                            "type": "string"
+                          },
+                          "SourceSorUIDVal": {
+                            "type": "string"
+                          },
+                          "TargetSorBK": {
+                            "type": "string"
+                          },
+                          "TargetSorUIDVal": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "SourceSorBK",
+                          "SourceEntityBK",
+                          "SourceSorUIDVal",
+                          "TargetSorBK",
+                          "TargetSorUIDVal"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  }
+                },
+                "Quiz_Rosetta_Stone_for_Ticket_ID": {
+                  "runAfter": {},
+                  "type": "Http",
+                  "inputs": {
+                    "body": {
+                      "SourceEntityBK": "TIC",
+                      "SourceSorBK": "HD",
+                      "SourceSorUIDVal": "@{triggerBody()?['ticket']?['id']}",
+                      "TargetSorBK": "SCRM"
+                    },
+                    "headers": {
+                      "Authorization": "Bearer @{body('Parse_Rosetta_Stone_OAuth_Token')?['access_token']}",
+                      "Content-Type": "application/json",
+                      "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                    },
+                    "method": "POST",
+                    "retryPolicy": {
+                      "type": "none"
+                    },
+                    "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
+                  }
+                },
+                "Trigger_the_helpdesk-ticket-eventDescription_event_synchronously": {
+                  "runAfter": {
+                    "Check_results_are_more_than_zero_(TIC)": [
+                      "Succeeded"
+                    ]
+                  },
+                  "type": "Http",
+                  "inputs": {
+                    "body": {
+                      "eventIdentifier": {
+                        "eventDescription": "@{variables('eventDescription')}",
+                        "systemEntity": "ticket",
+                        "systemName": "helpdesk"
+                      },
+                      "eventInformation": "@triggerBody()"
+                    },
+                    "headers": {
+                      "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                      "Content-Type": "application/json",
+                      "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                    },
+                    "method": "POST",
+                    "retryPolicy": {
+                      "type": "none"
+                    },
+                    "uri": "[variables('ProcessEventInformationUrl')]"
+                  }
+                }
+              },
+              "runAfter": {
+                "Parse_Rosetta_Stone_Results_(CNT)_(Again)": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "and": [
+                  {
+                    "greater": [
+                      "@length(body('Parse_Rosetta_Stone_Results_(CNT)_(Again)'))",
+                      0
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
             "Check_results_are_more_than_zero_(ORG)": {
               "actions": {
                 "Set_eventDescription_=_\"updated\"": {
@@ -280,46 +431,6 @@
                   {
                     "greater": [
                       "@length(body('Parse_Rosetta_Stone_Results_(ORG)'))",
-                      0
-                    ]
-                  }
-                ]
-              },
-              "type": "If"
-            },
-            "Check_results_are_more_than_zero_(TIC)": {
-              "actions": {
-                "Set_eventDescription_=_\"updated\"_(3)": {
-                  "runAfter": {},
-                  "type": "SetVariable",
-                  "inputs": {
-                    "name": "eventDescription",
-                    "value": "updated"
-                  }
-                }
-              },
-              "runAfter": {
-                "Parse_Rosetta_Stone_Results_(TIC)": [
-                  "Succeeded"
-                ]
-              },
-              "else": {
-                "actions": {
-                  "Set_eventDescription_=_\"created\"_(3)": {
-                    "runAfter": {},
-                    "type": "SetVariable",
-                    "inputs": {
-                      "name": "eventDescription",
-                      "value": "created"
-                    }
-                  }
-                }
-              },
-              "expression": {
-                "and": [
-                  {
-                    "greater": [
-                      "@length(body('Parse_Rosetta_Stone_Results_(TIC)'))",
                       0
                     ]
                   }
@@ -780,15 +891,15 @@
                 }
               }
             },
-            "Parse_Rosetta_Stone_Results_(ORG)": {
+            "Parse_Rosetta_Stone_Results_(CNT)_(Again)": {
               "runAfter": {
-                "Quiz_Rosetta_Stone_for_Organization_ID": [
+                "Quiz_Rosetta_Stone_for_User_ID_(Again)": [
                   "Succeeded"
                 ]
               },
               "type": "ParseJson",
               "inputs": {
-                "content": "@body('Quiz_Rosetta_Stone_for_Organization_ID')",
+                "content": "@body('Quiz_Rosetta_Stone_for_User_ID_(Again)')",
                 "schema": {
                   "items": {
                     "properties": {
@@ -821,15 +932,15 @@
                 }
               }
             },
-            "Parse_Rosetta_Stone_Results_(TIC)": {
+            "Parse_Rosetta_Stone_Results_(ORG)": {
               "runAfter": {
-                "Quiz_Rosetta_Stone_for_Ticket_ID": [
+                "Quiz_Rosetta_Stone_for_Organization_ID": [
                   "Succeeded"
                 ]
               },
               "type": "ParseJson",
               "inputs": {
-                "content": "@body('Quiz_Rosetta_Stone_for_Ticket_ID')",
+                "content": "@body('Quiz_Rosetta_Stone_for_Organization_ID')",
                 "schema": {
                   "items": {
                     "properties": {
@@ -1046,35 +1157,9 @@
                 "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
               }
             },
-            "Quiz_Rosetta_Stone_for_Ticket_ID": {
-              "runAfter": {
-                "Trigger_the_helpdeski-user-eventDescription_event_synchronously": [
-                  "Succeeded"
-                ]
-              },
-              "type": "Http",
-              "inputs": {
-                "body": {
-                  "SourceEntityBK": "TIC",
-                  "SourceSorBK": "HD",
-                  "SourceSorUIDVal": "@{triggerBody()?['ticket']?['id']}",
-                  "TargetSorBK": "SCRM"
-                },
-                "headers": {
-                  "Authorization": "Bearer @{body('Parse_Rosetta_Stone_OAuth_Token')?['access_token']}",
-                  "Content-Type": "application/json",
-                  "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
-                },
-                "method": "POST",
-                "retryPolicy": {
-                  "type": "none"
-                },
-                "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
-              }
-            },
             "Quiz_Rosetta_Stone_for_Ticket_ID_(ITSM)": {
               "runAfter": {
-                "Trigger_the_helpdesk-ticket-eventDescription_event_synchronously": [
+                "Check_results_are_more_than_zero_(CNT)_(Again)": [
                   "Succeeded"
                 ]
               },
@@ -1124,32 +1209,27 @@
                 "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
               }
             },
-            "Trigger_the_helpdesk-ticket-eventDescription_event_synchronously": {
+            "Quiz_Rosetta_Stone_for_User_ID_(Again)": {
               "runAfter": {
-                "Check_results_are_more_than_zero_(TIC)": [
+                "Trigger_the_helpdeski-user-eventDescription_event_synchronously": [
                   "Succeeded"
                 ]
               },
               "type": "Http",
               "inputs": {
                 "body": {
-                  "eventIdentifier": {
-                    "eventDescription": "@{variables('eventDescription')}",
-                    "systemEntity": "ticket",
-                    "systemName": "helpdesk"
-                  },
-                  "eventInformation": "@triggerBody()"
+                  "SourceEntityBK": "CNT",
+                  "SourceSorBK": "HD",
+                  "SourceSorUIDVal": "@{triggerBody()?['ticket']?['requester']?['id']}",
+                  "TargetSorBK": "SCRM"
                 },
                 "headers": {
-                  "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                  "Authorization": "Bearer @{body('Parse_Rosetta_Stone_OAuth_Token')?['access_token']}",
                   "Content-Type": "application/json",
                   "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
                 },
                 "method": "POST",
-                "retryPolicy": {
-                  "type": "none"
-                },
-                "uri": "[variables('ProcessEventInformationUrl')]"
+                "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
               }
             },
             "Trigger_the_helpdeski-organization-eventDescription_event_synchronously": {

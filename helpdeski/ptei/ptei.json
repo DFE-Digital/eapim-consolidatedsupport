@@ -1229,6 +1229,9 @@
                   "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
                 },
                 "method": "POST",
+                "retryPolicy": {
+                  "type": "none"
+                },
                 "uri": "[variables('RegisterTranslateSorToTargetUrl')]"
               }
             },

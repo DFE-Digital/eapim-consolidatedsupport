@@ -445,6 +445,7 @@
                   "eventInformation": {
                     "attachment_token": "@{body('Parse_Upload_Result')?['upload']?['token']}",
                     "element_id": "@{triggerBody()?['incident_sys_id']}",
+                    "sys_id": "@{concat(concat('comment_', triggerBody()['incident_sys_id']), concat('_', formatDateTime(utcNow(), 'yyyyMMddHHmmss')))}",
                     "value": "An attachment was created against the corresponding ServiceNow incident, filename: \"@{triggerBody()?['attachment_filename']}\"."
                   }
                 },

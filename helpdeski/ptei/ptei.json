@@ -457,36 +457,15 @@
                               "For_Each_Attachment": {
                                 "foreach": "@items('For_Each_Comment')?['attachments']",
                                 "actions": {
-                                  "Trigger_the_helpdesk-attachment-created_event_synchronously": {
+                                  "Append_attachment_to_attachmentsArray": {
                                     "runAfter": {},
-                                    "type": "Http",
+                                    "type": "AppendToArrayVariable",
                                     "inputs": {
-                                      "body": {
-                                        "eventIdentifier": {
-                                          "eventDescription": "created",
-                                          "systemEntity": "attachment",
-                                          "systemName": "helpdesk"
-                                        },
-                                        "eventInformation": {
-                                          "ticket": {
-                                            "attachment": {
-                                              "filename": "@{items('For_Each_Attachment')?['filename']}",
-                                              "url": "@{items('For_Each_Attachment')?['url']}"
-                                            },
-                                            "id": "@{triggerBody()?['ticket']?['id']}"
-                                          }
-                                        }
-                                      },
-                                      "headers": {
-                                        "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
-                                        "Content-Type": "application/json",
-                                        "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
-                                      },
-                                      "method": "POST",
-                                      "retryPolicy": {
-                                        "type": "none"
-                                      },
-                                      "uri": "[variables('ProcessEventInformationUrl')]"
+                                      "name": "attachmentsArray",
+                                      "value": {
+                                        "filename": "@{items('For_Each_Attachment')?['filename']}",
+                                        "url": "@{items('For_Each_Attachment')?['url']}"
+                                      }
                                     }
                                   }
                                 },
@@ -623,10 +602,59 @@
                   },
                   "runAfter": {},
                   "type": "Foreach"
+                },
+                "If_attachmentsArray_has_items": {
+                  "actions": {
+                    "Trigger_the_helpdesk-attachment-created_event_synchronously": {
+                      "runAfter": {},
+                      "type": "Http",
+                      "inputs": {
+                        "body": {
+                          "eventIdentifier": {
+                            "eventDescription": "created",
+                            "systemEntity": "attachment",
+                            "systemName": "helpdesk"
+                          },
+                          "eventInformation": {
+                            "ticket": {
+                              "attachments": "@variables('attachmentsArray')",
+                              "id": "@{triggerBody()?['ticket']?['id']}"
+                            }
+                          }
+                        },
+                        "headers": {
+                          "Authorization": "Bearer @{body('Parse_Orchestrator_OAuth_Token')?['access_token']}",
+                          "Content-Type": "application/json",
+                          "Ocp-Apim-Subscription-Key": "@body('Parse_apim-custeng-dataservicessubscriptionkey')?['value']"
+                        },
+                        "method": "POST",
+                        "retryPolicy": {
+                          "type": "none"
+                        },
+                        "uri": "[variables('ProcessEventInformationUrl')]"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "For_Each_Comment": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "and": [
+                      {
+                        "greater": [
+                          "@length(variables('attachmentsArray'))",
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "type": "If"
                 }
               },
               "runAfter": {
-                "Parse_Rosetta_Stone_Results_(TIC-SNOW)": [
+                "Initialise_the_attachmentsArray_variable": [
                   "Succeeded"
                 ]
               },
@@ -746,6 +774,22 @@
                   "type": "none"
                 },
                 "uri": "[variables('OrchestratorApiTokenRequestPayloadUrl')]"
+              }
+            },
+            "Initialise_the_attachmentsArray_variable": {
+              "runAfter": {
+                "Parse_Rosetta_Stone_Results_(TIC-SNOW)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "attachmentsArray",
+                    "type": "Array"
+                  }
+                ]
               }
             },
             "Initialise_the_eventDescription_variable": {

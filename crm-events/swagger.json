@@ -112,97 +112,94 @@
     "crm-account-cubase": {
       "properties": {
         "Name": {
-          "type": "string"
+          "type": "string",
+          "example": "Waterfront Dining Ltd"
         },
         "PostcodeAppendedDuplicateCompanyName": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "accountid": {
-          "type": "string"
+          "type": "string",
+          "example": "c8cdfe34-4e8f-46fc-a568-fef3767b11a4"
         },
         "address1_city": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_county": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_line1": {
-          "type": "string"
+          "type": "string",
+          "example": "10 Whitfield St"
         },
         "address1_line2": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_line3": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_postalcode": {
-          "type": "string"
+          "type": "string",
+          "example": "W1T 2RE"
         },
         "customertypecode": {
           "properties": {
             "Value": {
+              "type": "integer",
+              "default": null,
+              "example": null,
               "enum": [
-                null,
                 200001,
                 200002,
                 200005,
                 200007,
                 200008
-              ],
-              "type": [
-                "integer",
-                "null"
               ]
             }
           },
-          "required": [
-            "Value"
-          ],
-          "type": "object"
+          "type": "object",
+          "default": null,
+          "example": null
         },
         "emailaddress1": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "owneremail": {
-          "type": "string"
+          "type": "string",
+          "example": "joe.bloggs@education.example.com"
         },
         "owneridname": {
-          "type": "string"
+          "type": "string",
+          "example": "Joe BLOGGS"
         },
         "sfa_ceasedtrading": {
           "type": "integer",
           "enum": [
             0,
             1
-          ]
+          ],
+          "default": 0,
+          "example": 0
         },
         "sfa_employermanagement": {
           "properties": {
             "Value": {
-              "type": [
-                "integer",
-                "null"
-              ],
+              "type": "integer",
+              "default": null,
+              "example": null,
               "enum": [
-                null,
                 229660000,
                 229660001,
                 229660002,
@@ -214,15 +211,13 @@
             }
           },
           "type": "object",
-          "required": [
-            "Value"
-          ]
+          "default": null,
+          "example": null
         },
         "telephone1": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         }
       },
       "required": [
@@ -264,37 +259,36 @@
       ],
       "properties": {
         "address1_city": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_county": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_line1": {
-          "type": "string"
+          "type": "string",
+          "example": "10 Whitfield St"
         },
         "address1_line2": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_line3": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "address1_postalcode": {
-          "type": "string"
+          "type": "string",
+          "example": "W1T 2RE"
         },
         "contactid": {
-          "type": "string"
+          "type": "string",
+          "example": "4c12874b-da0a-41dc-9ad3-519294785e06"
         },
         "customertypecode": {
           "type": "object",
@@ -304,6 +298,7 @@
           "properties": {
             "Value": {
               "type": "integer",
+              "example": 200001,
               "enum": [
                 1,
                 2,
@@ -316,19 +311,17 @@
           }
         },
         "emailaddress1": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "example": "jane.doe@waterfrontdining.example.com"
         },
         "fullname": {
-          "type": "string"
+          "type": "string",
+          "example": "Jane Doe"
         },
         "mobilephone": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "default": null,
+          "example": null
         },
         "parentcustomerid": {
           "type": "object",
@@ -337,12 +330,14 @@
           ],
           "properties": {
             "id": {
-              "type": "string"
+              "type": "string",
+              "example": "c8cdfe34-4e8f-46fc-a568-fef3767b11a4"
             }
           }
         },
         "telephone1": {
-          "type": "string"
+          "type": "string",
+          "example": "01234567890"
         }
       }
     }

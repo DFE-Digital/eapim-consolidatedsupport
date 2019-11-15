@@ -26,7 +26,25 @@
             "description": "A JSON payload containing the event data.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/itsm-event-data"
+              "properties": {
+                "incident_sys_id": {
+                  "type": "string",
+                  "example": "zn7idfbvx5elivmpoaalb6m557yx7mkj"
+                },
+                "attachment_data": {
+                  "type": "string",
+                  "example": "VGhpcyBpcyBhbiBleGFtcGxlIGZpbGUu"
+                },
+                "attachment_filename": {
+                  "type": "string",
+                  "example": "Example File.txt"
+                }
+              },
+              "required": [
+                "incident_sys_id",
+                "attachment_data",
+                "attachment_filename"
+              ]
             }
           }
         ],
@@ -56,7 +74,29 @@
             "description": "A JSON payload containing the event data.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/itsm-event-data"
+              "properties": {
+                "sys_id": {
+                  "type": "string",
+                  "example": "h6kchmcprl86p4eznwor42rtk0xwfk37"
+                },
+                "element_id": {
+                  "type": "string",
+                  "example": "4rqvx9cuj3eq7xk7tullcqi1ida5fyc6"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "This is the comment body."
+                },
+                "attachment_token": {
+                  "type": "string",
+                  "example": null
+                }
+              },
+              "required": [
+                "sys_id",
+                "element_id",
+                "value"
+              ]
             }
           }
         ],
@@ -86,7 +126,20 @@
             "description": "A JSON payload containing the event data.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/itsm-event-data"
+              "properties": {
+                "sys_id": {
+                  "type": "string",
+                  "example": "sykhx13uq8wzw50cvn091p40iqcd7t2m"
+                },
+                "number": {
+                  "type": "string",
+                  "example": "INC12345678"
+                }
+              },
+              "required": [
+                "sys_id",
+                "number"
+              ]
             }
           }
         ],
@@ -114,7 +167,15 @@
             "description": "A JSON payload containing the event data.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/itsm-event-data"
+              "properties": {
+                "sys_id": {
+                  "type": "string",
+                  "example": "rvwdga48zvvawxpthk60qdsmyadqdu70"
+                }
+              },
+              "required": [
+                "sys_id"
+              ]
             }
           }
         ],

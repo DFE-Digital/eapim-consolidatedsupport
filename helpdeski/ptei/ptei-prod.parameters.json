@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "LogicAppName": {
-      "value": "s113p01-la-05"
+      "value": "s113p01-ptei-la-05"
     },
     "MiddlewareEnvironmentPrefix": {
       "value": "s113p01"

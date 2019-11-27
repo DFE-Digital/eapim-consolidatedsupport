@@ -75,10 +75,6 @@
             "required": true,
             "schema": {
               "properties": {
-                "sys_id": {
-                  "type": "string",
-                  "example": "h6kchmcprl86p4eznwor42rtk0xwfk37"
-                },
                 "element_id": {
                   "type": "string",
                   "example": "4rqvx9cuj3eq7xk7tullcqi1ida5fyc6"
@@ -93,7 +89,6 @@
                 }
               },
               "required": [
-                "sys_id",
                 "element_id",
                 "value"
               ]

@@ -1,6 +1,11 @@
 <policies>
   <inbound>
     <base />
+        <set-header name="X-FORWARDED-PROTO" exists-action="delete" />
+        <set-header name="X-FORWARDED-PORT" exists-action="delete" />
+        <set-header name="X-Forwarded-For" exists-action="delete" />
+        <set-header name="X-Original-URL" exists-action="delete" />
+        <set-header name="X-ORIGINAL-HOST" exists-action="delete" />
   </inbound>
   <backend>
     <base />

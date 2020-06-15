@@ -50,8 +50,8 @@
         "Service Offering": "TBC"
       },
       "identity": {
-        "principalId": "f3a3bcbb-c9ee-490f-a8df-0944789c4f2e",
-        "tenantId": "9c7d9dd3-840c-4b3f-818e-552865082e16",
+        "principalId": null,
+        "tenantId": null,
         "type": "SystemAssigned"
       },
       "properties": {
